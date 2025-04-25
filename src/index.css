@@ -8,7 +8,7 @@
 @layer base {
   body {
     @apply font-sans antialiased bg-dark text-white;
-    background: linear-gradient(135deg, rgb(48, 16, 78) 0%, rgb(58, 20, 93) 50%, rgb(40, 12, 67) 100%);
+    background: linear-gradient(135deg, #1E194E 0%, #342987 50%, #1E194E 100%);
   }
   
   ::selection {
@@ -24,19 +24,19 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-purple-600/20 rounded-full hover:bg-purple-500/40 transition-colors;
+    @apply bg-purple-600/50 rounded-full hover:bg-purple-500/70 transition-colors;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply px-6 py-3 bg-primary text-dark font-medium rounded-lg 
-           hover:bg-mint-dark transition-all duration-200;
+    @apply px-6 py-3 bg-accent text-purple-900 font-medium rounded-lg 
+           hover:bg-teal-300 transition-all duration-200;
   }
   
   .btn-secondary {
     @apply px-6 py-3 text-white font-medium rounded-lg
-           border border-gray-800 bg-light hover:bg-light/80
+           border border-purple-500/30 bg-light/80 hover:bg-light
            transition-all duration-200;
   }
   
@@ -45,8 +45,8 @@
   }
 
   .glass-card {
-    @apply bg-light/50 backdrop-blur-xl rounded-lg border border-gray-800
-           hover:bg-light/70 transition-all duration-200;
+    @apply bg-light/40 backdrop-blur-xl rounded-lg border border-purple-500/20
+           hover:bg-light/60 transition-all duration-200 shadow-lg;
   }
 
   .section-padding {
@@ -66,7 +66,7 @@
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-600;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent to-purple-400;
   }
 }
 
@@ -92,7 +92,7 @@
   }
 
   .glass-effect {
-    @apply backdrop-blur-xl bg-purple-900/10 border border-purple-500/20;
+    @apply backdrop-blur-xl bg-purple-700/10 border border-purple-500/20 shadow-lg;
   }
 
   .hover-lift {

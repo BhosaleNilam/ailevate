@@ -64,7 +64,7 @@ function App() {
           <Navbar />
           <AnimatedRoutes />
         </div>
-        <div className="fixed bottom-0 left-0 w-full h-32 bg-gradient-to-t from-purple-950 to-transparent pointer-events-none z-20"></div>
+        <div className="fixed bottom-0 left-0 w-full h-32 bg-gradient-to-t from-purple-900 to-transparent pointer-events-none z-20"></div>
       </div>
     </Router>
   );

@@ -57,7 +57,7 @@ export default function Navbar() {
       variants={navVariants}
       className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled 
-          ? 'bg-purple-700/90 backdrop-blur-lg shadow-lg shadow-purple-500/10' 
+          ? 'bg-purple-800/80 backdrop-blur-lg shadow-lg shadow-purple-500/10 border-b border-purple-500/20' 
           : 'bg-transparent'
       }`}
     >
@@ -91,15 +91,15 @@ export default function Navbar() {
                   to={link.path}
                   className={`relative text-lg transition-colors duration-200 ${
                     isActive(link.path)
-                      ? 'text-white font-semibold neon-text'
-                      : 'text-gray-300 hover:text-white'
+                      ? 'text-accent font-semibold neon-text'
+                      : 'text-gray-300 hover:text-accent'
                   }`}
                 >
                   {link.name}
                   {isActive(link.path) && (
                     <motion.div
                       layoutId="underline"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-400 to-purple-600"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-teal-400 to-purple-500"
                     />
                   )}
                 </Link>
@@ -121,7 +121,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <motion.button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-gray-300 hover:text-white focus:outline-none"
+            className="md:hidden text-gray-300 hover:text-accent focus:outline-none"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
@@ -167,7 +167,7 @@ export default function Navbar() {
                       className={`block py-2 text-lg ${
                         isActive(link.path)
                           ? 'gradient-text font-semibold'
-                          : 'text-gray-300 hover:text-white'
+                          : 'text-gray-300 hover:text-accent'
                       }`}
                     >
                       {link.name}

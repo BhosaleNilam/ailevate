@@ -14,9 +14,9 @@ export default function AnimatedBackground() {
     scrollYProgress,
     [0, 0.5, 1],
     [
-      'linear-gradient(135deg, rgb(48, 16, 78) 0%, rgb(58, 20, 93) 50%, rgb(40, 12, 67) 100%)',
-      'linear-gradient(135deg, rgb(58, 20, 93) 0%, rgb(40, 12, 67) 50%, rgb(48, 16, 78) 100%)',
-      'linear-gradient(135deg, rgb(40, 12, 67) 0%, rgb(48, 16, 78) 50%, rgb(58, 20, 93) 100%)'
+      'linear-gradient(135deg, #1E194E 0%, #342987 50%, #1E194E 100%)',
+      'linear-gradient(135deg, #342987 0%, #1E194E 50%, #4A39C0 100%)',
+      'linear-gradient(135deg, #1E194E 0%, #4A39C0 50%, #342987 100%)'
     ]
   );
 
@@ -31,11 +31,12 @@ export default function AnimatedBackground() {
         style={{ 
           backgroundImage: `url(${gridPattern})`,
           backgroundRepeat: 'repeat',
-          opacity: 0.2 
+          opacity: 0.15 
         }}
       />
       <div className="absolute inset-0">
-        <div className="h-full w-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-purple-900/80 to-purple-950"></div>
+        <div className="floating-dots opacity-30"></div>
+        <div className="h-full w-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-teal-400/10 via-purple-700/20 to-purple-900/70"></div>
       </div>
       <div className="absolute inset-0 backdrop-blur-[100px]"></div>
     </motion.div>
