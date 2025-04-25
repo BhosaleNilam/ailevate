@@ -42,6 +42,7 @@ function AnimatedRoutes() {
         animate="animate"
         exit="exit"
         variants={pageVariants}
+        className="overflow-x-hidden"
       >
         <Routes location={location}>
           <Route path="/" element={<Home />} />
@@ -60,7 +61,7 @@ function App() {
     <Router>
       <div className="relative min-h-screen overflow-hidden">
         <AnimatedBackground />
-        <div className="relative z-10">
+        <div className="relative z-10 overflow-x-fix">
           <Navbar />
           <AnimatedRoutes />
         </div>

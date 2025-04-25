@@ -22,7 +22,7 @@ export default function AnimatedBackground() {
 
   return (
     <motion.div
-      className="fixed inset-0 w-full h-full -z-10"
+      className="fixed inset-0 w-full h-full -z-10 overflow-hidden"
       animate={{ opacity: isMounted ? 1 : 0 }}
       style={{ background: backgroundColor }}
     >
@@ -34,7 +34,7 @@ export default function AnimatedBackground() {
           opacity: 0.2 
         }}
       />
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 overflow-hidden">
         <div className="h-full w-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-purple-900/80 to-purple-950"></div>
       </div>
       <div className="absolute inset-0 backdrop-blur-[100px]"></div>
