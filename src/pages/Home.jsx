@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import homepageImage from '../images/homepage_image.webp';
+import AnimatedHeading from '../components/AnimatedHeading';
 
 export default function Home() {
   const features = [
@@ -62,22 +63,7 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-900/50 to-purple-950/50"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('/public/grid.svg')] opacity-5"></div>
-        
-        {/* Animated particles */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="floating-dots opacity-30"></div>
-          
-          {/* Animated circles - contained within viewport */}
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-purple-600/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/3 w-48 h-48 sm:w-64 sm:h-64 bg-purple-800/10 rounded-full blur-3xl animate-ping animate-slow"></div>
-        </div>
-      </div>
-
+    <div className="relative min-h-screen overflow-hidden">
       {/* Hero Section */}
       <div className="relative pt-32 pb-16 sm:pt-40 sm:pb-20">
         <div className="container mx-auto px-4">
@@ -91,14 +77,14 @@ export default function Home() {
               variants={itemVariants}
               className="max-w-3xl"
             >
-              <motion.h1 
+              <AnimatedHeading
+                as="h1"
+                animation="splitWords"
+                splitWords={true}
                 className="text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight"
-                variants={itemVariants}
               >
-                <span className="inline-block transform hover:scale-105 transition-transform duration-300">Skyrocket</span> Your{' '}
-                <span className="inline-block transform hover:scale-105 transition-transform duration-300">Business</span> with{' '}
-                <span className="text-gradient inline-block transform hover:scale-105 transition-transform duration-300">AI-Powered</span> Leads, Reviews & Bookings – On Autopilot!
-              </motion.h1>
+                Skyrocket Your Business with AI-Powered Solutions
+              </AnimatedHeading>
               
               <motion.p 
                 className="text-lg text-gray-300 mb-8"
@@ -201,13 +187,13 @@ export default function Home() {
                     rotate: [0, -5, 0] 
                   }}
                   transition={{
-                    duration: 6, 
+                    duration: 5, 
                     repeat: Infinity,
                     repeatType: "reverse",
-                    delay: 1
+                    delay: 0.5
                   }}
                 >
-                  <div className="text-xs font-bold text-purple-300">GROWTH SYSTEM</div>
+                  <div className="text-xs font-bold text-purple-300">AUTOMATED</div>
                 </motion.div>
               </div>
             </motion.div>
@@ -215,159 +201,164 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Chat Demo Section */}
-      <div className="relative py-20">
+      {/* Features Section */}
+      <div className="relative py-20 bg-purple-950/50 backdrop-blur-sm">
         <div className="container mx-auto px-4">
-          <motion.div 
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <AnimatedHeading
+              as="h2"
+              animation="highlight"
+              highlight={true}
+              className="text-3xl sm:text-4xl font-bold text-white mb-6"
             >
-              <motion.h2 
-                className="text-4xl font-bold text-white mb-6"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                <span className="text-gradient">Engage with leads</span> in seconds
-              </motion.h2>
-              <motion.p 
-                className="text-purple-200 mb-8"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-              >
-                Our AI-powered system automatically engages with your leads, qualifies them, and books appointments instantly.
-              </motion.p>
-              <div className="space-y-4">
-                {[
-                  'Instant lead engagement',
-                  'Smart qualification process',
-                  'Automated appointment booking',
-                  'Real-time chat analytics'
-                ].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 + 0.4 }}
-                    className="flex items-center space-x-3"
-                    whileHover={{ x: 5 }}
-                  >
-                    <div className="w-6 h-6 rounded-full bg-purple-600/20 flex items-center justify-center">
-                      <CheckCircleIcon className="h-4 w-4 text-purple-400" />
-                    </div>
-                    <span className="text-purple-200">{item}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
+              How Our *AI-Powered Solution* Works For You
+            </AnimatedHeading>
             
-            {/* Chat Demo Animation */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
+            <motion.p 
+              className="text-lg text-gray-300"
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative"
+              transition={{ duration: 0.7, delay: 0.3 }}
             >
-              <div className="bg-purple-800/30 rounded-2xl p-6 border border-purple-700 hover:shadow-xl hover:shadow-purple-900/20 transition-all duration-300">
-                <div className="space-y-4">
-                  <motion.div 
-                    className="flex items-start space-x-3"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
-                  >
-                    <motion.div 
-                      className="w-8 h-8 rounded-full bg-purple-600/20 flex-shrink-0"
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    ></motion.div>
-                    <motion.div 
-                      className="bg-purple-900/50 rounded-lg p-3 text-sm text-white max-w-xs"
-                      animate={{ x: [0, 2, 0] }}
-                      transition={{ duration: 3, repeat: Infinity }}
-                    >
-                      Hi! I noticed you filled out our form. How familiar are you with AI automation?
-                    </motion.div>
-                  </motion.div>
-                  <motion.div 
-                    className="flex items-start space-x-3 justify-end"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 1 }}
-                  >
-                    <motion.div 
-                      className="bg-purple-600/10 rounded-lg p-3 text-sm text-purple-300 max-w-xs"
-                      animate={{ x: [0, -2, 0] }}
-                      transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-                    >
-                      I'm interested in learning more about it. Can you tell me how it works?
-                    </motion.div>
-                  </motion.div>
-                  
-                  {/* Typing indicator */}
-                  <motion.div 
-                    className="flex items-start space-x-3 opacity-70"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 1.4 }}
-                  >
-                    <div className="w-8 h-8 rounded-full bg-purple-600/20 flex-shrink-0"></div>
-                    <div className="bg-purple-900/30 rounded-lg px-4 py-3 flex space-x-1">
-                      <span className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></span>
-                      <span className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
-                      <span className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Logos Section */}
-      <div className="relative py-20 border-t border-purple-800">
-        <div className="container mx-auto px-4">
-          <motion.p 
-            className="text-center text-purple-300 mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            Trusted by leading companies worldwide
-          </motion.p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center opacity-70">
-            {['ESTATE AI', 'Affluent', 'propmedia'].map((logo, index) => (
-              <motion.div
+              Our AI system works around the clock to ensure you never miss an opportunity.
+            </motion.p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Smart Lead Capture",
+                description: "AI answers missed calls, captures lead details, and books appointments automatically.",
+                icon: "📱",
+                color: "from-purple-500 to-indigo-600"
+              },
+              {
+                title: "Review Automation",
+                description: "Generates authentic 5-star reviews from happy customers without manual effort.",
+                icon: "⭐",
+                color: "from-indigo-500 to-blue-600"
+              },
+              {
+                title: "Growth Analytics",
+                description: "Track performance with real-time dashboards showing ROI and growth metrics.",
+                icon: "📊",
+                color: "from-blue-500 to-purple-600"
+              }
+            ].map((feature, index) => (
+              <motion.div 
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
+                className="glass-card p-6 rounded-xl relative overflow-hidden"
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-purple-200 text-xl font-bold hover:text-white transition-colors duration-300"
-                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.7, delay: 0.1 * index }}
+                whileHover={{ 
+                  y: -5,
+                  transition: { type: "spring", stiffness: 300 } 
+                }}
               >
-                {logo}
+                <div className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-gradient-to-br opacity-20" style={{ background: `linear-gradient(${feature.color})` }}></div>
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
+                <p className="text-gray-300">{feature.description}</p>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </div>
+      
+      {/* Testimonials Section */}
+      <div className="relative py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <AnimatedHeading
+              as="h2"
+              animation="scaleIn"
+              className="text-3xl sm:text-4xl font-bold text-white mb-6"
+            >
+              What Our Clients Say
+            </AnimatedHeading>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {[
+              {
+                quote: "Since implementing AiLEVATE, our missed calls have been completely eliminated and our bookings have increased by 37%.",
+                author: "Sarah Johnson",
+                company: "BeautySpace Salon",
+                image: "https://randomuser.me/api/portraits/women/45.jpg"
+              },
+              {
+                quote: "The AI call answering has transformed our business. We're capturing leads 24/7 and our customer satisfaction is at an all-time high.",
+                author: "Michael Rodriguez",
+                company: "Rodriguez Plumbing",
+                image: "https://randomuser.me/api/portraits/men/32.jpg"
+              }
+            ].map((testimonial, index) => (
+              <motion.div 
+                key={index}
+                className="glass-card p-6 rounded-xl relative"
+                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.2 * index }}
+                whileHover={{ y: -5, transition: { type: "spring", stiffness: 300 } }}
+              >
+                <div className="absolute top-6 left-6 text-purple-400 text-4xl opacity-20">"</div>
+                <div className="relative z-10">
+                  <p className="text-gray-300 mb-4 italic">{testimonial.quote}</p>
+                  <div className="flex items-center">
+                    <img src={testimonial.image} alt={testimonial.author} className="w-12 h-12 rounded-full mr-4" />
+                    <div>
+                      <p className="text-white font-medium">{testimonial.author}</p>
+                      <p className="text-purple-400 text-sm">{testimonial.company}</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      {/* CTA Section */}
+      <div className="relative py-20 bg-gradient-to-br from-purple-900/70 to-purple-950/70 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <AnimatedHeading
+              as="h2"
+              animation="slideIn"
+              className="text-3xl sm:text-4xl font-bold text-white mb-6"
+            >
+              Ready to Transform Your Business?
+            </AnimatedHeading>
+            
+            <motion.p 
+              className="text-lg text-gray-300 mb-8"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+            >
+              Get started today with our risk-free trial. No setup fees, no contracts.
+            </motion.p>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link 
+                to="/contact" 
+                className="inline-block nav-button bg-purple-600 hover:bg-purple-500 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 text-center"
+              >
+                Start Your Free Trial
+              </Link>
+            </motion.div>
           </div>
         </div>
       </div>
