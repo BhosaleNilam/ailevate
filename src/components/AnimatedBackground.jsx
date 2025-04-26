@@ -14,9 +14,9 @@ export default function AnimatedBackground() {
     scrollYProgress,
     [0, 0.5, 1],
     [
-      'linear-gradient(135deg, rgb(48, 16, 78) 0%, rgb(73, 26, 116) 50%, rgb(40, 12, 67) 100%)',
-      'linear-gradient(135deg, rgb(59, 21, 95) 0%, rgb(40, 12, 67) 50%, rgb(48, 16, 78) 100%)',
-      'linear-gradient(135deg, rgb(40, 12, 67) 0%, rgb(48, 16, 78) 50%, rgb(73, 26, 116) 100%)'
+      'linear-gradient(135deg, rgb(15, 35, 55) 0%, rgb(32, 67, 98) 50%, rgb(12, 30, 48) 100%)',
+      'linear-gradient(135deg, rgb(20, 44, 65) 0%, rgb(12, 30, 48) 50%, rgb(15, 35, 55) 100%)',
+      'linear-gradient(135deg, rgb(12, 30, 48) 0%, rgb(15, 35, 55) 50%, rgb(32, 67, 98) 100%)'
     ]
   );
 
@@ -38,7 +38,7 @@ export default function AnimatedBackground() {
       
       {/* Animated orbs */}
       <motion.div 
-        className="absolute rounded-full bg-purple-700/20 blur-[80px]"
+        className="absolute rounded-full bg-teal-700/20 blur-[80px]"
         animate={{
           x: ["-10%", "30%", "-5%"],
           y: ["0%", "25%", "5%"],
@@ -58,7 +58,7 @@ export default function AnimatedBackground() {
       />
       
       <motion.div 
-        className="absolute rounded-full bg-indigo-700/20 blur-[100px]"
+        className="absolute rounded-full bg-blue-700/20 blur-[100px]"
         animate={{
           x: ["20%", "-15%", "10%"],
           y: ["10%", "-15%", "0%"],
@@ -79,7 +79,7 @@ export default function AnimatedBackground() {
       
       {/* Radial gradient overlay */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="h-full w-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-purple-900/80 to-purple-950"></div>
+        <div className="h-full w-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/30 via-blue-900/80 to-slate-950"></div>
       </div>
       
       {/* Stars effect */}
@@ -98,7 +98,7 @@ export default function AnimatedBackground() {
       />
       
       {/* Glow vignette effect around edges */}
-      <div className="absolute inset-0 bg-gradient-to-t from-purple-950/80 via-transparent to-purple-950/50"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/50"></div>
       
       <div className="absolute inset-0 backdrop-blur-[80px]"></div>
     </motion.div>

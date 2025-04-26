@@ -89,7 +89,7 @@ const AnimatedHeading = ({
                 whileInView="animate"
                 viewport={{ once: true, margin: "-50px" }}
                 variants={animationVariants.highlightIn}
-                className={`bg-gradient-to-r from-purple-400/30 to-purple-600/30 inline-block bg-no-repeat ${highlightClassName}`}
+                className={`bg-sky-400/30 inline-block bg-no-repeat ${highlightClassName}`}
                 style={{ backgroundSize: "0% 30%", backgroundPosition: "0 100%" }}
                 transition={{ delay: delay + 0.3 }}
               >

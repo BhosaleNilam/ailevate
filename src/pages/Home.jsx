@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import { CheckCircleIcon, ArrowRightIcon } from '@heroicons/react/24/solid';
 import homepageImage from '../images/homepage_image.webp';
 import AnimatedHeading from '../components/AnimatedHeading';
 
@@ -19,329 +19,275 @@ export default function Home() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3
+        staggerChildren: 0.3
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    hidden: { y: 20, opacity: 0 },
+    visible: {
       y: 0,
+      opacity: 1,
       transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 10
+        duration: 0.5
       }
     }
   };
 
   const imageVariants = {
-    hidden: { opacity: 0, scale: 0.8, rotate: -2 },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
-      rotate: 0,
-      transition: {
-        type: "spring",
-        damping: 15,
-        stiffness: 70,
-        duration: 0.8
-      }
+    hidden: { scale: 0.8, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: { duration: 0.8, ease: "easeOut" }
     },
     hover: {
-      scale: 1.03,
-      rotate: 1,
-      transition: {
-        type: "spring",
-        damping: 10,
-        stiffness: 120
-      }
+      scale: 1.05,
+      transition: { duration: 0.3 }
     }
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="min-h-screen bg-slate-950">
       {/* Hero Section */}
-      <div className="relative pt-32 pb-16 sm:pt-40 sm:pb-20">
-        <div className="container mx-auto px-4">
+      <div className="relative overflow-hidden">
+        {/* Background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-950"></div>
+        
+        {/* Animated particles */}
+        <div className="absolute inset-0">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 rounded-full bg-blue-500 opacity-20"
+              initial={{ 
+                x: Math.random() * window.innerWidth, 
+                y: Math.random() * window.innerHeight 
+              }}
+              animate={{ 
+                x: Math.random() * window.innerWidth, 
+                y: Math.random() * window.innerHeight 
+              }}
+              transition={{ 
+                duration: 10 + Math.random() * 20,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+            />
+          ))}
+        </div>
+        
+        <div className="container mx-auto px-6 py-20 relative z-10">
           <motion.div 
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+            className="flex flex-col-reverse md:flex-row items-center justify-between gap-12"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
-            <motion.div
+            <motion.div 
+              className="w-full md:w-1/2"
               variants={itemVariants}
-              className="max-w-3xl"
             >
-              <AnimatedHeading
-                as="h1"
-                animation="splitWords"
-                splitWords={true}
-                className="text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight"
-              >
-                Skyrocket Your Business with AI-Powered Solutions
-              </AnimatedHeading>
+              <motion.div variants={itemVariants} className="mb-4">
+                <span className="inline-block px-4 py-1.5 rounded-full border border-teal-500/30 bg-teal-900/20 text-sm font-medium text-teal-400 mb-4">
+                  Spring 2024 Launch
+                </span>
+              </motion.div>
+              
+              <AnimatedHeading 
+                tag="h1" 
+                text="🚀 Introducing AiLevate" 
+                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+                animation="highlightIn"
+                wordHighlight={[1]}
+                highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
+              />
               
               <motion.p 
-                className="text-lg text-gray-300 mb-8"
+                className="text-xl text-slate-300 mb-6"
                 variants={itemVariants}
               >
-                Struggling with missed calls, low reviews, and lost leads? Our AI-Powered Growth System fixes this instantly—turning calls into customers, automating 5-star reviews, and building your customer database for repeat sales.
+                An AI-powered automation agency focusing on custom solutions for real businesses. We help businesses stop wasting time on tasks that should've been automated yesterday.
               </motion.p>
-
-              <motion.div 
-                className="space-y-4 mb-8"
-                variants={containerVariants}
-              >
-                {['More reviews → Higher ranking → More customers.', 
-                  'More follow-ups → More booked appointments.', 
-                  'Pay $0 Until You See Results – No Risk, Just Growth.'].map((item, index) => (
-                  <motion.div 
-                    key={index}
-                    className="flex items-center space-x-3"
-                    variants={itemVariants}
-                    custom={index}
-                    whileHover={{ x: 5 }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                  >
-                    <CheckCircleIcon className="h-6 w-6 text-primary animate-pulse" />
-                    <span className="text-gray-300">{item}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              <motion.div
+              
+              <motion.p
+                className="text-lg text-slate-400 mb-8 italic"
                 variants={itemVariants}
-                className="space-y-4"
               >
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <Link 
-                    to="/get-started" 
-                    className="inline-block nav-button bg-purple-600 hover:bg-purple-500 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 text-center"
+                "We're not just riding the AI wave. We're AiLevate-ing with it."
+              </motion.p>
+              
+              <motion.div 
+                className="flex flex-col sm:flex-row items-center gap-4 mb-8"
+                variants={itemVariants}
+              >
+                <Link to="/contact">
+                  <motion.button 
+                    className="px-8 py-3 rounded-lg bg-gradient-to-r from-teal-500 to-blue-600 text-white font-semibold shadow-lg hover:shadow-teal-500/20 hover:from-teal-400 hover:to-blue-500 transition duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    Try It FREE – Only Pay When You See Results!
-                  </Link>
-                </motion.div>
-                <motion.p 
-                  className="text-sm text-purple-300 animate-pulse"
-                  variants={itemVariants}
-                >
-                  Only 10 Free AI Setups Available This Month – Act Fast!
-                </motion.p>
+                    Get Started
+                  </motion.button>
+                </Link>
+                <Link to="/services" className="text-slate-300 hover:text-teal-400 transition duration-300 flex items-center gap-2">
+                  Explore Solutions <ArrowRightIcon className="w-4 h-4" />
+                </Link>
               </motion.div>
             </motion.div>
-
-            <motion.div
-              className="relative overflow-hidden"
-              variants={imageVariants}
-              whileHover="hover"
+            
+            <motion.div 
+              className="w-full md:w-1/2"
+              variants={itemVariants}
             >
-              {/* Animated image container with effects */}
-              <div className="relative mx-auto max-w-lg">
-                {/* Glow effect behind image */}
-                <div className="absolute -inset-4 bg-gradient-to-r from-purple-600/30 to-purple-300/20 rounded-xl blur-xl opacity-70 group-hover:opacity-100 transition duration-500"></div>
-                
-                {/* Gradient border */}
-                <div className="gradient-border p-2 rounded-lg relative z-10 shadow-2xl hover:shadow-purple-500/20 transition-all duration-500">
-                  <img 
-                    src={homepageImage} 
-                    alt="AiLEVATE Agency Whiteboard" 
-                    className="rounded-lg w-full max-w-full mx-auto relative z-20 transform transition-all duration-500"
-                  />
-                  
-                  {/* Corner accents */}
-                  <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-purple-400 rounded-tl-lg"></div>
-                  <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-purple-400 rounded-tr-lg"></div>
-                  <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-purple-400 rounded-bl-lg"></div>
-                  <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-purple-400 rounded-br-lg"></div>
-                </div>
-                
-                {/* Floating elements */}
-                <motion.div 
-                  className="absolute -top-6 -right-6 sm:-top-8 sm:-right-8 p-2 sm:p-3 bg-purple-900/80 backdrop-blur-sm rounded-lg shadow-xl z-30"
-                  animate={{ 
-                    y: [0, -10, 0],
-                    rotate: [0, 5, 0] 
-                  }}
-                  transition={{
-                    duration: 5, 
-                    repeat: Infinity,
-                    repeatType: "reverse"
-                  }}
-                >
-                  <div className="text-xs font-bold text-purple-300">AI-POWERED</div>
-                </motion.div>
-                
-                <motion.div 
-                  className="absolute -bottom-6 -left-6 p-2 sm:p-3 bg-purple-800/80 backdrop-blur-sm rounded-lg shadow-xl z-30"
-                  animate={{ 
-                    y: [0, 10, 0],
-                    rotate: [0, -5, 0] 
-                  }}
-                  transition={{
-                    duration: 5, 
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    delay: 0.5
-                  }}
-                >
-                  <div className="text-xs font-bold text-purple-300">AUTOMATED</div>
-                </motion.div>
-              </div>
+              <motion.div
+                className="rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/20"
+                variants={imageVariants}
+                whileHover="hover"
+              >
+                <img 
+                  src={homepageImage} 
+                  alt="AI Automation" 
+                  className="w-full h-auto object-cover"
+                />
+              </motion.div>
             </motion.div>
           </motion.div>
         </div>
       </div>
-
-      {/* Features Section */}
-      <div className="relative py-20 bg-purple-950/50 backdrop-blur-sm">
+      
+      {/* Services Section */}
+      <div className="py-20 bg-slate-900">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <AnimatedHeading
-              as="h2"
-              animation="highlight"
-              highlight={true}
-              className="text-3xl sm:text-4xl font-bold text-white mb-6"
-            >
-              How Our *AI-Powered Solution* Works For You
-            </AnimatedHeading>
-            
-            <motion.p 
-              className="text-lg text-gray-300"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-            >
-              Our AI system works around the clock to ensure you never miss an opportunity.
-            </motion.p>
-          </div>
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <AnimatedHeading 
+              tag="h2" 
+              text="Here's what we automate (so you don't have to)" 
+              className="text-3xl md:text-4xl font-bold mb-6"
+              animation="fadeIn"
+              highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
+            />
+          </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                title: "Smart Lead Capture",
-                description: "AI answers missed calls, captures lead details, and books appointments automatically.",
-                icon: "📱",
-                color: "from-purple-500 to-indigo-600"
+                title: "Lead Outreach & Qualification",
+                description: "Automated systems that reach out to potential clients, qualify their interest, and nurture them through your sales funnel.",
+                icon: "📊"
               },
               {
-                title: "Review Automation",
-                description: "Generates authentic 5-star reviews from happy customers without manual effort.",
-                icon: "⭐",
-                color: "from-indigo-500 to-blue-600"
+                title: "Actual Conversions",
+                description: "AI systems that move beyond just generating leads - they help convert those leads into paying customers.",
+                icon: "🔄"
               },
               {
-                title: "Growth Analytics",
-                description: "Track performance with real-time dashboards showing ROI and growth metrics.",
-                icon: "📊",
-                color: "from-blue-500 to-purple-600"
+                title: "Reputation Management",
+                description: "Set-and-forget systems that monitor, manage, and improve your online reputation completely on autopilot.",
+                icon: "⭐"
+              },
+              {
+                title: "Custom CRM & Workflow Systems",
+                description: "Fully tailored CRMs and workflow automations designed specifically for your business processes.",
+                icon: "🔄"
+              },
+              {
+                title: "24/7 AI Agents",
+                description: "AI agents that work around the clock handling your repetitive tasks so your team can focus on high-value work.",
+                icon: "🤖"
+              },
+              {
+                title: "Efficiency Optimization",
+                description: "Solutions that eliminate the 60% of inefficiencies in your business that could be mitigated by AI automations.",
+                icon: "⚡"
               }
-            ].map((feature, index) => (
+            ].map((service, index) => (
               <motion.div 
                 key={index}
-                className="glass-card p-6 rounded-xl relative overflow-hidden"
+                className="bg-slate-800/50 p-6 rounded-xl hover:bg-slate-800 transition duration-300"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: 0.1 * index }}
-                whileHover={{ 
-                  y: -5,
-                  transition: { type: "spring", stiffness: 300 } 
-                }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                whileHover={{ y: -5 }}
               >
-                <div className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-gradient-to-br opacity-20" style={{ background: `linear-gradient(${feature.color})` }}></div>
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                <p className="text-gray-300">{feature.description}</p>
+                <div className="text-4xl mb-4">{service.icon}</div>
+                <h3 className="text-xl font-semibold mb-3 text-white">{service.title}</h3>
+                <p className="text-slate-300">{service.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </div>
       
-      {/* Testimonials Section */}
-      <div className="relative py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <AnimatedHeading
-              as="h2"
-              animation="scaleIn"
-              className="text-3xl sm:text-4xl font-bold text-white mb-6"
+      {/* Why Now Section */}
+      <div className="py-20 bg-slate-950">
+        <div className="container mx-auto px-6">
+          <motion.div 
+            className="max-w-4xl mx-auto text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <AnimatedHeading 
+              tag="h2" 
+              text="But... why now?" 
+              className="text-3xl md:text-4xl font-bold mb-6"
+              animation="fadeIn"
+              highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
+            />
+            <p className="text-xl text-slate-300 mb-8">
+              Because spring isn't just about the weather changing. It's about momentum.
+            </p>
+            <p className="text-lg text-slate-400 mb-12">
+              Businesses are tired. Tired of clunky tools. Tired of manual processes. Tired of wasting energy on the 60% of inefficiencies that could be mitigated by AI Automations.
+            </p>
+            
+            <motion.div 
+              className="p-8 bg-slate-800/30 rounded-xl border border-teal-500/10"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
-              What Our Clients Say
-            </AnimatedHeading>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {[
-              {
-                quote: "Since implementing AiLEVATE, our missed calls have been completely eliminated and our bookings have increased by 37%.",
-                author: "Sarah Johnson",
-                company: "BeautySpace Salon",
-                image: "https://randomuser.me/api/portraits/women/45.jpg"
-              },
-              {
-                quote: "The AI call answering has transformed our business. We're capturing leads 24/7 and our customer satisfaction is at an all-time high.",
-                author: "Michael Rodriguez",
-                company: "Rodriguez Plumbing",
-                image: "https://randomuser.me/api/portraits/men/32.jpg"
-              }
-            ].map((testimonial, index) => (
-              <motion.div 
-                key={index}
-                className="glass-card p-6 rounded-xl relative"
-                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: 0.2 * index }}
-                whileHover={{ y: -5, transition: { type: "spring", stiffness: 300 } }}
-              >
-                <div className="absolute top-6 left-6 text-purple-400 text-4xl opacity-20">"</div>
-                <div className="relative z-10">
-                  <p className="text-gray-300 mb-4 italic">{testimonial.quote}</p>
-                  <div className="flex items-center">
-                    <img src={testimonial.image} alt={testimonial.author} className="w-12 h-12 rounded-full mr-4" />
-                    <div>
-                      <p className="text-white font-medium">{testimonial.author}</p>
-                      <p className="text-purple-400 text-sm">{testimonial.company}</p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+              <h3 className="text-2xl font-bold mb-4 text-teal-400">AI isn't here to replace people. It's here to unlock them!</h3>
+              <p className="text-lg text-slate-300">
+                Let it handle the heavy lifting—so your team can focus on the parts of work they actually enjoy (and excel at).
+              </p>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
       
       {/* CTA Section */}
-      <div className="relative py-20 bg-gradient-to-br from-purple-900/70 to-purple-950/70 backdrop-blur-sm">
+      <div className="relative py-20 bg-gradient-to-br from-blue-900/70 to-slate-950/70 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <AnimatedHeading
-              as="h2"
-              animation="slideIn"
+              tag="h2"
+              text="That's the world we're building at AiLevate."
               className="text-3xl sm:text-4xl font-bold text-white mb-6"
-            >
-              Ready to Transform Your Business?
-            </AnimatedHeading>
+              animation="highlightIn"
+              wordHighlight={[5]}
+              highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
+            />
             
             <motion.p 
-              className="text-lg text-gray-300 mb-8"
+              className="text-xl text-gray-300 mb-8"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.3 }}
             >
-              Get started today with our risk-free trial. No setup fees, no contracts.
+              Join us. Or better yet, let our AI Agents join you.
             </motion.p>
             
             <motion.div
@@ -354,9 +300,9 @@ export default function Home() {
             >
               <Link 
                 to="/contact" 
-                className="inline-block nav-button bg-purple-600 hover:bg-purple-500 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 text-center"
+                className="inline-block bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-400 hover:to-blue-500 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 text-center"
               >
-                Start Your Free Trial
+                Get Started Today
               </Link>
             </motion.div>
           </div>

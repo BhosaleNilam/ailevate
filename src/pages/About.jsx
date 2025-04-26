@@ -1,58 +1,55 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import AnimatedHeading from '../components/AnimatedHeading';
+import { Link } from 'react-router-dom';
 
 export default function About() {
-  const teamMembers = [
+  const coreValues = [
     {
       name: 'Our Mission',
       role: 'What drives us',
-      description: 'At AiLEVATE, we are on a mission to revolutionize how businesses connect with their customers. We believe in harnessing the power of AI to create meaningful, efficient, and scalable customer relationships.',
+      description: 'At AiLevate, we\'re on a mission to help businesses stop wasting time on tasks that should\'ve been automated yesterday. We create custom AI solutions that enable real business results.',
       icon: '🚀'
     },
     {
       name: 'Our Vision',
-      role: 'Where we are headed',
-      description: 'We envision a future where every business, regardless of size, has access to enterprise-level AI tools that can help them grow and succeed in an increasingly digital world.',
+      role: 'Where we\'re headed',
+      description: 'We envision a world where AI isn\'t replacing people—it\'s unlocking them. Where teams can focus on the work they enjoy and excel at, while AI handles the repetitive tasks.',
       icon: '🔮'
     },
     {
       name: 'Our Values',
       role: 'What we believe in',
-      description: 'Innovation, integrity, and customer success are at the heart of everything we do. We are committed to providing solutions that deliver real, measurable results for our clients.',
+      description: 'Innovation without ego. Technology with purpose. Automation with a human touch. We believe AI should serve people, not the other way around.',
       icon: '✨'
     }
   ];
   
-  const team = [
+  const services = [
     {
-      name: 'Jennifer Smith',
-      role: 'CEO & Founder',
-      image: 'https://randomuser.me/api/portraits/women/32.jpg'
+      title: 'Lead Outreach & Qualification',
+      description: 'Automated systems that reach out to potential clients and nurture them through your sales funnel.'
     },
     {
-      name: 'Michael Chen',
-      role: 'CTO',
-      image: 'https://randomuser.me/api/portraits/men/83.jpg'
+      title: 'Conversion Automation',
+      description: 'AI systems that help convert qualified leads into paying customers with minimal human intervention.'
     },
     {
-      name: 'Sophia Rodriguez',
-      role: 'Head of AI Development',
-      image: 'https://randomuser.me/api/portraits/women/67.jpg'
+      title: 'Reputation Management',
+      description: 'Set-and-forget systems that monitor and improve your online reputation completely on autopilot.'
     },
     {
-      name: 'David Wilson',
-      role: 'Lead UI/UX Designer',
-      image: 'https://randomuser.me/api/portraits/men/55.jpg'
+      title: 'Custom CRM & Workflow Systems',
+      description: 'Tailored systems designed specifically for your business processes and integration needs.'
     }
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-slate-950">
       {/* Hero Section */}
       <div className="relative py-24 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-purple-600/10 rounded-full blur-[100px]"></div>
-        <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-indigo-600/10 rounded-full blur-[100px]"></div>
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-teal-600/10 rounded-full blur-[100px]"></div>
+        <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-blue-600/10 rounded-full blur-[100px]"></div>
         
         <div className="container mx-auto px-4">
           <motion.div
@@ -61,22 +58,31 @@ export default function About() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16 relative"
           >
-            <AnimatedHeading 
-              as="h1" 
-              animation="splitWords"
-              splitWords={true}
-              className="text-5xl font-bold text-white mb-6"
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-block px-4 py-1.5 mb-4 rounded-full border border-teal-500/30 bg-teal-900/20"
             >
-              About AiLEVATE
-            </AnimatedHeading>
+              <span className="text-sm font-medium text-teal-400">Spring 2024 Launch</span>
+            </motion.div>
+            
+            <AnimatedHeading 
+              tag="h1" 
+              text="🚀 Introducing AiLevate"
+              className="text-5xl font-bold text-white mb-6"
+              animation="highlightIn"
+              wordHighlight={[1]}
+              highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
+            />
             
             <motion.p 
-              className="text-xl text-purple-200 max-w-3xl mx-auto"
+              className="text-xl text-teal-200 max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              Transforming businesses through intelligent automation and AI-powered solutions
+              An AI-powered automation agency focusing on custom solutions for real businesses
             </motion.p>
           </motion.div>
           
@@ -86,140 +92,152 @@ export default function About() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="max-w-4xl mx-auto mb-20 text-center"
           >
-            <p className="text-gray-300 text-lg">
-              Founded in 2021, AiLEVATE has been at the forefront of bringing artificial intelligence solutions to businesses of all sizes. Our team of experts combines deep technical knowledge with business acumen to deliver solutions that drive real results.
+            <p className="text-gray-300 text-lg mb-6">
+              Spring's here! And it feels like the perfect time to launch something that's been in the works for months. I've been heads-down for a while - Testing. Building. Refining.
+            </p>
+            <p className="text-gray-300 text-lg mb-6">
+              Now it's time to bring it into the light: AiLevate - an AI-powered automation agency that helps businesses stop wasting time on tasks that should've been automated yesterday.
+            </p>
+            <p className="text-xl text-teal-400 italic mb-6">
+              "We're not just riding the AI wave. We're AiLevate-ing with it."
             </p>
           </motion.div>
         </div>
       </div>
       
-      {/* Core Values Section */}
-      <div className="py-20 bg-purple-950/30 backdrop-blur-sm relative overflow-hidden">
+      {/* Why Now Section */}
+      <div className="py-20 bg-slate-900/30 backdrop-blur-sm relative overflow-hidden">
         <div className="container mx-auto px-4">
           <AnimatedHeading 
-            as="h2" 
-            animation="highlight"
-            highlight={true}
+            tag="h2" 
+            text="But... why now?"
+            className="text-3xl font-bold text-white text-center mb-12"
+            animation="highlightIn"
+            wordHighlight={[0, 1]}
+            highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
+          />
+          
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-slate-800/50 p-8 rounded-xl border border-slate-700 mb-10"
+            >
+              <p className="text-xl text-gray-300 mb-6">
+                Because spring isn't just about the weather changing. It's about momentum.
+              </p>
+              <p className="text-lg text-gray-400">
+                Businesses are tired. Tired of clunky tools. Tired of manual processes. Tired of wasting energy on the 60% of inefficiencies that could be mitigated by AI Automations.
+              </p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="bg-teal-900/20 p-8 rounded-xl border border-teal-500/20"
+            >
+              <h3 className="text-2xl font-bold text-teal-400 mb-4">AI isn't here to replace people. It's here to unlock them!</h3>
+              <p className="text-lg text-gray-300">
+                Let it handle the heavy lifting—so your team can focus on the parts of work they actually enjoy (and excel at).
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Core Values Section */}
+      <div className="py-20 relative">
+        <div className="container mx-auto px-4">
+          <AnimatedHeading 
+            tag="h2" 
+            text="Our Core Values and Principles"
             className="text-3xl font-bold text-white text-center mb-16"
-          >
-            Our *Core Values* and Principles
-          </AnimatedHeading>
+            animation="highlightIn"
+            wordHighlight={[1, 2]}
+            highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
+          />
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-            {teamMembers.map((member, index) => (
+            {coreValues.map((value, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
-                className="glass-card rounded-xl p-8 hover:transform hover:-translate-y-2 transition-all duration-300 relative overflow-hidden"
+                className="bg-slate-900/50 rounded-xl p-8 hover:transform hover:-translate-y-2 transition-all duration-300 relative overflow-hidden border border-slate-800"
               >
-                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-purple-500/20 to-transparent rounded-bl-3xl"></div>
-                <div className="text-4xl mb-4">{member.icon}</div>
-                <h3 className="text-2xl font-bold text-white mb-2">{member.name}</h3>
-                <p className="text-purple-300 font-medium mb-4">{member.role}</p>
-                <p className="text-gray-300">{member.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-      
-      {/* Team Section */}
-      <div className="py-20 relative">
-        <div className="container mx-auto px-4">
-          <AnimatedHeading 
-            as="h2" 
-            animation="scaleIn"
-            className="text-3xl font-bold text-white text-center mb-16"
-          >
-            Meet Our Leadership Team
-          </AnimatedHeading>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            {team.map((member, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-                className="glass-card rounded-xl p-6 text-center"
-              >
-                <div className="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-2 border-purple-500/30">
-                  <img 
-                    src={member.image} 
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-1">{member.name}</h3>
-                <p className="text-purple-400">{member.role}</p>
+                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-teal-500/20 to-transparent rounded-bl-3xl"></div>
+                <div className="text-4xl mb-4">{value.icon}</div>
+                <h3 className="text-2xl font-bold text-white mb-2">{value.name}</h3>
+                <p className="text-teal-300 font-medium mb-4">{value.role}</p>
+                <p className="text-gray-300">{value.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Impact Stats Section */}
-      <motion.div
-        className="py-20 bg-gradient-to-br from-purple-900/50 to-purple-950/50 backdrop-blur-sm"
-      >
+      {/* Services Section */}
+      <div className="py-20 bg-gradient-to-br from-slate-900/50 to-slate-950/50">
         <div className="container mx-auto px-4">
           <AnimatedHeading 
-            as="h2" 
-            animation="slideIn"
+            tag="h2" 
+            text="Here's what we automate (so you don't have to)"
             className="text-3xl font-bold text-white text-center mb-16"
-          >
-            Our Impact
-          </AnimatedHeading>
+            animation="highlightIn"
+            wordHighlight={[1, 2]}
+            highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
+          />
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {[
-              { value: '20k+', label: 'Appointments Booked' },
-              { value: '95%', label: 'Client Satisfaction' },
-              { value: '500+', label: 'Businesses Helped' }
-            ].map((stat, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {services.map((service, index) => (
               <motion.div 
                 key={index}
-                className="glass-card rounded-xl p-8 text-center relative overflow-hidden"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                className="bg-slate-900/50 rounded-xl p-6 text-left border border-slate-800"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ 
-                  duration: 0.5, 
-                  delay: index * 0.2,
-                  type: "spring",
-                  stiffness: 100
-                }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ y: -5 }}
               >
-                <motion.div 
-                  className="text-4xl font-bold text-gradient mb-2"
-                  initial={{ opacity: 0, y: -20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.3 + index * 0.2 }}
-                >
-                  {stat.value}
-                </motion.div>
-                <motion.p 
-                  className="text-gray-300"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.4 + index * 0.2 }}
-                >
-                  {stat.label}
-                </motion.p>
-                <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-purple-500/10 rounded-full blur-xl"></div>
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 flex items-center justify-center rounded-full bg-teal-900/50 text-teal-400 mr-4">
+                    <span>➝</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white">{service.title}</h3>
+                </div>
+                <p className="text-gray-300 pl-14">{service.description}</p>
               </motion.div>
             ))}
           </div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="text-center mt-12"
+          >
+            <p className="text-xl text-teal-400 mb-6">
+              That's the world we're building at AiLevate.
+            </p>
+            <Link to="/contact">
+              <motion.button
+                className="px-8 py-3 bg-gradient-to-r from-teal-500 to-blue-600 rounded-lg text-white font-medium shadow-lg hover:from-teal-400 hover:to-blue-500 transition-all"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Get Started Today
+              </motion.button>
+            </Link>
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 } 

@@ -8,33 +8,41 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
-  const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'Contact', path: '/contact' },
-  ];
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
     };
-
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location]);
+
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Services', path: '/services' },
+    { name: 'Contact', path: '/contact' }
+  ];
+
   const isActive = (path) => location.pathname === path;
 
   const navVariants = {
-    hidden: { y: -100, opacity: 0 },
+    hidden: { y: -20, opacity: 0 },
     visible: { 
       y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
         staggerChildren: 0.1,
         delayChildren: 0.2
       }
@@ -42,210 +50,138 @@ export default function Navbar() {
   };
 
   const linkVariants = {
-    hidden: { y: -20, opacity: 0 },
+    hidden: { y: -10, opacity: 0 },
     visible: { 
       y: 0, 
       opacity: 1 
     },
     hover: {
-      scale: 1.1,
-      y: -2,
+      scale: 1.05,
       transition: {
         type: "spring",
-        stiffness: 400,
+        stiffness: 300,
         damping: 10
       }
     }
   };
 
   const logoVariants = {
-    initial: { 
-      opacity: 0, 
-      scale: 0.5,
-      rotate: -5
-    },
+    initial: { opacity: 0, scale: 0.9 },
     animate: { 
       opacity: 1, 
       scale: 1,
-      rotate: 0,
       transition: {
-        type: "spring",
-        stiffness: 260,
-        damping: 20,
-        duration: 0.8
+        duration: 0.5
       }
     },
     hover: {
-      scale: 1.05,
-      rotate: -2,
-      transition: {
-        duration: 0.3
-      }
+      scale: 1.05
     }
   };
 
   return (
     <>
-      {/* This div prevents any gap/line from appearing when scrolling */}
-      <div className="fixed top-0 left-0 w-full h-24 bg-transparent z-40 navbar-bg-fixer"></div>
+      <div className="fixed top-0 left-0 w-full h-20 bg-transparent z-40"></div>
       
-      <motion.nav
-        initial="hidden"
-        animate="visible"
-        variants={navVariants}
-        className={`fixed w-full z-50 transition-all duration-500 ${
+      <nav 
+        className={`fixed w-full z-50 transition-all duration-300 ${
           scrolled 
-            ? 'bg-purple-900/80 backdrop-blur-xl shadow-purple-900/30' 
-            : 'bg-transparent py-4'
+            ? 'py-3 bg-slate-900/90 backdrop-blur-lg shadow-lg' 
+            : 'py-4 bg-transparent'
         }`}
       >
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 md:px-6">
           <div className="flex justify-between items-center">
-            <Link to="/" className="flex items-center space-x-3">
-              <motion.div
-                initial="initial"
-                animate="animate"
-                whileHover="hover"
-                variants={logoVariants}
-                className="flex items-center"
-              >
-                <span className="text-3xl font-bold gradient-text">AiLEVATE</span>
-              </motion.div>
-            </Link>
-
+            <motion.div
+              initial="initial"
+              animate="animate"
+              whileHover="hover"
+              variants={logoVariants}
+            >
+              <Link to="/" className="flex items-center">
+                <span className="font-bold text-2xl bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">
+                  AI Levate
+                </span>
+              </Link>
+            </motion.div>
+            
             {/* Desktop Navigation */}
             <motion.div 
-              className="hidden md:flex items-center space-x-8"
+              className="hidden md:flex space-x-8"
+              initial="hidden"
+              animate="visible"
               variants={navVariants}
             >
-              {navLinks.map((link, index) => (
+              {navLinks.map((link) => (
                 <motion.div
-                  key={link.path}
+                  key={link.name}
                   variants={linkVariants}
                   whileHover="hover"
-                  custom={index}
                 >
                   <Link
                     to={link.path}
-                    className="relative text-lg font-medium transition-colors duration-200 overflow-hidden group px-2 py-1"
-                  >
-                    <span className={`relative z-10 ${
+                    className={`font-medium transition-colors hover:text-teal-400 ${
                       isActive(link.path)
-                        ? 'text-white font-semibold neon-text'
-                        : 'text-gray-300 group-hover:text-white'
-                    }`}>
-                      {link.name}
-                    </span>
-                    
-                    {/* Active indicator */}
-                    {isActive(link.path) ? (
-                      <motion.div
-                        layoutId="navActiveIndicator"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-400 to-purple-600"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    ) : (
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-400/0 via-purple-500/0 to-purple-600/0 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-                    )}
-                    
-                    {/* Hover effect */}
-                    <div className="absolute inset-0 bg-purple-500/10 rounded-md scale-0 group-hover:scale-100 transition-transform duration-300" />
+                        ? 'text-teal-400'
+                        : 'text-white'
+                    }`}
+                  >
+                    {link.name}
                   </Link>
                 </motion.div>
               ))}
-              <motion.div
-                variants={linkVariants}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link
-                  to="/get-started"
-                  className="nav-button bg-purple-600 hover:bg-purple-500 text-white px-5 py-2 rounded-lg font-medium transition-all duration-200"
-                >
-                  Get Started
-                </Link>
-              </motion.div>
             </motion.div>
-
+            
             {/* Mobile Menu Button */}
-            <motion.button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-gray-300 hover:text-white focus:outline-none relative z-20"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              variants={linkVariants}
+            <button
+              onClick={toggleMenu}
+              className="p-2 rounded-lg text-white md:hidden focus:outline-none"
+              aria-label="Toggle menu"
             >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {isOpen ? (
-                  <path d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </motion.button>
+              {isOpen ? (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
           </div>
-
-          {/* Mobile Navigation */}
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ opacity: 0, height: 0, y: -10 }}
-                animate={{ opacity: 1, height: 'auto', y: 0 }}
-                exit={{ opacity: 0, height: 0, y: -10 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="md:hidden overflow-y-auto max-h-[70vh] glass-card my-4 rounded-lg border border-purple-500/20 hide-scrollbar"
-              >
-                <div className="p-4 space-y-4">
-                  {navLinks.map((link, index) => (
-                    <motion.div
-                      key={link.path}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <Link
-                        to={link.path}
-                        onClick={() => setIsOpen(false)}
-                        className={`block py-3 px-4 text-lg rounded-md transition-all duration-200 ${
-                          isActive(link.path)
-                            ? 'gradient-text font-semibold bg-purple-500/10'
-                            : 'text-gray-300 hover:text-white hover:bg-purple-500/5'
-                        }`}
-                      >
-                        {link.name}
-                      </Link>
-                    </motion.div>
-                  ))}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="mt-6"
-                  >
-                    <Link
-                      to="/get-started"
-                      onClick={() => setIsOpen(false)}
-                      className="block nav-button bg-purple-600 hover:bg-purple-500 text-white py-3 px-4 rounded-lg font-medium text-center transition-all duration-200"
-                    >
-                      Get Started
-                    </Link>
-                  </motion.div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
-      </motion.nav>
+        
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden overflow-hidden"
+            >
+              <div className="container mx-auto px-4 py-4 bg-slate-900/90 backdrop-blur-lg">
+                <div className="flex flex-col space-y-4">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.name}
+                      to={link.path}
+                      className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                        location.pathname === link.path
+                          ? 'bg-teal-500/10 text-teal-400'
+                          : 'text-white hover:bg-slate-800'
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
     </>
   );
 } 

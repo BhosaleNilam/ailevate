@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import '../styles/custom.css';
+import AnimatedHeading from '../components/AnimatedHeading';
+import { EnvelopeIcon, PhoneIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -11,24 +13,28 @@ export default function Contact() {
     message: ''
   });
   
-  const [isSubscribed, setIsSubscribed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log('Form submitted:', formData, 'Subscribed:', isSubscribed);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    console.log('Form submitted:', formData);
     setIsSubmitting(false);
-    // Reset form after submission
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
-    });
-    setIsSubscribed(false);
+    setIsSuccess(true);
+    
+    // Reset form after showing success message
+    setTimeout(() => {
+      setIsSuccess(false);
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+    }, 3000);
   };
 
   const handleChange = (e) => {
@@ -38,100 +44,178 @@ export default function Contact() {
     });
   };
 
-  const fadeIn = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 }
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.4 } 
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.5 } 
+    },
+    hover: { 
+      y: -5,
+      boxShadow: "0 15px 30px rgba(0, 0, 0, 0.2)",
+    }
   };
 
   return (
-    <div className="min-h-screen pt-20 pb-24" style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url(/bg-pattern.png)', backgroundSize: 'cover' }}>
+    <div className="min-h-screen pt-20 pb-24 bg-slate-950">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
-          <div className="mb-16">
+          <motion.div 
+            className="mb-16"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             <motion.div 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-block px-4 py-1.5 mb-4 rounded-full border border-purple-500/30 bg-purple-900/20"
+              variants={itemVariants}
+              className="inline-block px-4 py-1.5 mb-4 rounded-full border border-teal-500/30 bg-teal-900/20"
             >
-              <span className="text-sm font-medium tracking-wide text-center gradient-text">CUSTOMERS FEEDBACK</span>
+              <span className="text-sm font-medium tracking-wide text-center bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">GET IN TOUCH</span>
             </motion.div>
             
-            <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              Early Customers Feedback
-            </motion.h1>
+            <AnimatedHeading
+              tag="h1"
+              text="Let's Start a Conversation"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8"
+              animation="highlightIn"
+              wordHighlight={[3]}
+              highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
+            />
             
             <motion.div 
               className="space-y-4 text-lg text-gray-300"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
+              variants={itemVariants}
             >
               <div className="flex items-start space-x-3">
-                <span className="text-purple-400 text-xl mt-0.5">✧</span>
-                <p>Hassle-Free Support: Link with our crew anytime</p>
+                <span className="text-teal-400 text-xl mt-0.5">✦</span>
+                <p>Hassle-Free Support: Connect with our team anytime</p>
               </div>
               <div className="flex items-start space-x-3">
-                <span className="text-purple-400 text-xl mt-0.5">✧</span>
-                <p>Schedule a Demo Now: Witness our platform's performance</p>
+                <span className="text-teal-400 text-xl mt-0.5">✦</span>
+                <p>Schedule a Demo: Experience our AI solutions firsthand</p>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
           
           {/* Contact Cards and Form Layout */}
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
             {/* Contact Cards Side */}
             <div className="xl:col-span-5 space-y-6">
-            
               {/* Email Contact Card */}
               <motion.div 
-                className="glass-card p-6 rounded-xl"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
+                className="bg-slate-900/50 p-6 rounded-xl overflow-hidden border border-slate-800"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover="hover"
               >
                 <div className="flex">
                   <div className="mr-5">
-                    <div className="w-12 h-12 rounded-lg bg-purple-900/50 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
+                    <div className="w-12 h-12 rounded-lg bg-teal-900/50 flex items-center justify-center">
+                      <EnvelopeIcon className="h-6 w-6 text-teal-400" />
                     </div>
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold mb-2">Reach Out to Us</h3>
-                    <p className="text-gray-400 mb-4">Have questions? We're here to help reach out!</p>
-                    <a href="mailto:landerx@email.com" className="text-purple-400 hover:text-purple-300 transition-colors">landerx@email.com</a>
+                    <p className="text-gray-400 mb-4">Have questions? We're here to help!</p>
+                    <a href="mailto:contact@ailevate.com" className="text-teal-400 hover:text-teal-300 transition-colors">
+                      contact@ailevate.com
+                    </a>
                   </div>
                 </div>
               </motion.div>
               
               {/* Phone Contact Card */}
               <motion.div 
-                className="glass-card p-6 rounded-xl"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
+                className="bg-slate-900/50 p-6 rounded-xl overflow-hidden border border-slate-800"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: 0.1 }}
+                whileHover="hover"
               >
                 <div className="flex">
                   <div className="mr-5">
-                    <div className="w-12 h-12 rounded-lg bg-purple-900/50 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
+                    <div className="w-12 h-12 rounded-lg bg-teal-900/50 flex items-center justify-center">
+                      <PhoneIcon className="h-6 w-6 text-teal-400" />
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">Reach Out to Us</h3>
+                    <h3 className="text-xl font-semibold mb-2">Call Us Directly</h3>
                     <p className="text-gray-400 mb-4">Need assistance? Ring us up—we're at your service.</p>
-                    <a href="tel:+1234567890" className="text-purple-400 hover:text-purple-300 transition-colors">+1234567890</a>
+                    <a href="tel:+1234567890" className="text-teal-400 hover:text-teal-300 transition-colors">
+                      +1 (234) 567-890
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+              
+              {/* Office Location Card */}
+              <motion.div 
+                className="bg-slate-900/50 p-6 rounded-xl overflow-hidden border border-slate-800"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: 0.2 }}
+                whileHover="hover"
+              >
+                <div className="flex">
+                  <div className="mr-5">
+                    <div className="w-12 h-12 rounded-lg bg-teal-900/50 flex items-center justify-center">
+                      <MapPinIcon className="h-6 w-6 text-teal-400" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2">Visit Our Office</h3>
+                    <p className="text-gray-400 mb-4">Come see us for an in-person consultation.</p>
+                    <p className="text-teal-400">123 AI Boulevard, Tech Valley, CA 94103</p>
+                  </div>
+                </div>
+              </motion.div>
+              
+              {/* Hours Card */}
+              <motion.div 
+                className="bg-slate-900/50 p-6 rounded-xl overflow-hidden border border-slate-800"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: 0.3 }}
+                whileHover="hover"
+              >
+                <div className="flex">
+                  <div className="mr-5">
+                    <div className="w-12 h-12 rounded-lg bg-teal-900/50 flex items-center justify-center">
+                      <ClockIcon className="h-6 w-6 text-teal-400" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2">Business Hours</h3>
+                    <p className="text-gray-400 mb-4">We're available to assist you:</p>
+                    <div className="space-y-1">
+                      <p className="text-teal-400">Monday-Friday: 9:00 AM - 6:00 PM</p>
+                      <p className="text-teal-400">Saturday: 10:00 AM - 2:00 PM</p>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -139,12 +223,50 @@ export default function Contact() {
             
             {/* Form Side */}
             <motion.div 
-              className="xl:col-span-7 glass-card p-8 rounded-xl relative overflow-hidden"
+              className="xl:col-span-7 bg-slate-900/50 p-8 rounded-xl relative overflow-hidden border border-slate-800"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              transition={{ duration: 0.5 }}
             >
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500/20 via-purple-400/40 to-purple-600/20"></div>
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-500/20 via-teal-400/40 to-blue-500/20"></div>
+              
+              {/* Success Message */}
+              {isSuccess && (
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-r from-teal-900/90 to-blue-900/90 flex flex-col items-center justify-center p-8 z-10"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
+                    className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mb-4"
+                  >
+                    <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </motion.div>
+                  <motion.h3 
+                    className="text-2xl font-bold mb-2"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Message Sent!
+                  </motion.h3>
+                  <motion.p 
+                    className="text-center text-gray-300"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    Thank you for reaching out. We'll get back to you shortly.
+                  </motion.p>
+                </motion.div>
+              )}
+              
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-gray-300 mb-2">Name</label>
@@ -154,7 +276,7 @@ export default function Contact() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="custom-input w-full bg-black/30 border-gray-700 focus:border-purple-500"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
                     placeholder="Jane Smith"
                     required
                   />
@@ -168,8 +290,8 @@ export default function Contact() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="custom-input w-full bg-black/30 border-gray-700 focus:border-purple-500"
-                    placeholder="jane@framer.com"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                    placeholder="jane@example.com"
                     required
                   />
                 </div>
@@ -182,8 +304,8 @@ export default function Contact() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="custom-input w-full bg-black/30 border-gray-700 focus:border-purple-500"
-                    placeholder="Product related"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                    placeholder="AI Consulting Services"
                     required
                   />
                 </div>
@@ -196,8 +318,8 @@ export default function Contact() {
                     value={formData.message}
                     onChange={handleChange}
                     rows="4"
-                    className="custom-input w-full bg-black/30 border-gray-700 focus:border-purple-500"
-                    placeholder="message goes here..."
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                    placeholder="Tell us about your project or question..."
                     required
                   ></textarea>
                 </div>
@@ -206,34 +328,26 @@ export default function Contact() {
                   <input
                     type="checkbox"
                     id="subscribe"
-                    checked={isSubscribed}
-                    onChange={() => setIsSubscribed(!isSubscribed)}
-                    className="w-4 h-4 rounded border-gray-600 text-purple-600 focus:ring-purple-500"
+                    className="w-4 h-4 rounded border-gray-600 text-teal-600 focus:ring-teal-500"
                   />
                   <label htmlFor="subscribe" className="ml-2 text-sm text-gray-300">
-                    Subscribe to Newsletter
+                    Subscribe to our newsletter for AI industry insights
                   </label>
                 </div>
                 
                 <motion.button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 px-4 rounded-lg w-full transition-all duration-300 flex justify-center items-center"
+                  className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-400 hover:to-blue-500 text-white font-medium py-3 px-4 rounded-lg w-full transition-all duration-300 flex justify-center items-center"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   disabled={isSubmitting}
-                  style={{
-                    background: 'linear-gradient(90deg, #4A36B1, #6247D0)',
-                    boxShadow: '0px 4px 12px rgba(98, 71, 208, 0.3)'
-                  }}
                 >
                   {isSubmitting ? (
                     <div className="flex items-center justify-center">
-                      <div className="loading-pulse mr-2"></div>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                       <span>Sending...</span>
                     </div>
-                  ) : (
-                    'Submit'
-                  )}
+                  ) : "Send Message"}
                 </motion.button>
               </form>
             </motion.div>
