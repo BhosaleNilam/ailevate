@@ -1,7 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import AnimatedHeading from '../components/AnimatedHeading';
+import ParticlesBackground from '../components/ParticlesBackground';
 import { Link } from 'react-router-dom';
+import '../styles/custom.css';
 
 export default function About() {
   const coreValues = [
@@ -45,7 +47,13 @@ export default function About() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-slate-950 relative">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 -z-10" />
+      
+      {/* Particles Background */}
+      <ParticlesBackground count={40} maxSize={5} maxDuration={30} />
+      
       {/* Hero Section */}
       <div className="relative py-24 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-teal-600/10 rounded-full blur-[100px]"></div>
@@ -70,7 +78,7 @@ export default function About() {
             <AnimatedHeading 
               tag="h1" 
               text="🚀 Introducing AiLevate"
-              className="text-5xl font-bold text-white mb-6"
+              className="text-5xl font-bold text-white mb-6 text-animate-gradient"
               animation="highlightIn"
               wordHighlight={[1]}
               highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
@@ -111,7 +119,7 @@ export default function About() {
           <AnimatedHeading 
             tag="h2" 
             text="But... why now?"
-            className="text-3xl font-bold text-white text-center mb-12"
+            className="text-3xl font-bold text-white text-center mb-12 text-animate-gradient"
             animation="highlightIn"
             wordHighlight={[0, 1]}
             highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
@@ -123,7 +131,7 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="bg-slate-800/50 p-8 rounded-xl border border-slate-700 mb-10"
+              className="glass-card p-8 rounded-xl mb-10"
             >
               <p className="text-xl text-gray-300 mb-6">
                 Because spring isn't just about the weather changing. It's about momentum.
@@ -138,7 +146,7 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="bg-teal-900/20 p-8 rounded-xl border border-teal-500/20"
+              className="glass-card p-8 rounded-xl border border-teal-500/20"
             >
               <h3 className="text-2xl font-bold text-teal-400 mb-4">AI isn't here to replace people. It's here to unlock them!</h3>
               <p className="text-lg text-gray-300">
@@ -155,7 +163,7 @@ export default function About() {
           <AnimatedHeading 
             tag="h2" 
             text="Our Core Values and Principles"
-            className="text-3xl font-bold text-white text-center mb-16"
+            className="text-3xl font-bold text-white text-center mb-16 text-animate-gradient"
             animation="highlightIn"
             wordHighlight={[1, 2]}
             highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
@@ -169,7 +177,7 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
-                className="bg-slate-900/50 rounded-xl p-8 hover:transform hover:-translate-y-2 transition-all duration-300 relative overflow-hidden border border-slate-800"
+                className="glass-card rounded-xl p-8 hover:transform hover:-translate-y-2 transition-all duration-300 relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-teal-500/20 to-transparent rounded-bl-3xl"></div>
                 <div className="text-4xl mb-4">{value.icon}</div>
@@ -183,12 +191,12 @@ export default function About() {
       </div>
 
       {/* Services Section */}
-      <div className="py-20 bg-gradient-to-br from-slate-900/50 to-slate-950/50">
+      <div className="py-20 bg-animate-gradient bg-gradient-to-br from-slate-900/50 to-slate-950/50">
         <div className="container mx-auto px-4">
           <AnimatedHeading 
             tag="h2" 
             text="Here's what we automate (so you don't have to)"
-            className="text-3xl font-bold text-white text-center mb-16"
+            className="text-3xl font-bold text-white text-center mb-16 text-animate-gradient"
             animation="highlightIn"
             wordHighlight={[1, 2]}
             highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
@@ -198,7 +206,7 @@ export default function About() {
             {services.map((service, index) => (
               <motion.div 
                 key={index}
-                className="bg-slate-900/50 rounded-xl p-6 text-left border border-slate-800"
+                className="glass-card rounded-xl p-6 text-left"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -228,7 +236,7 @@ export default function About() {
             </p>
             <Link to="/contact">
               <motion.button
-                className="px-8 py-3 bg-gradient-to-r from-teal-500 to-blue-600 rounded-lg text-white font-medium shadow-lg hover:from-teal-400 hover:to-blue-500 transition-all"
+                className="btn-glow"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
               >

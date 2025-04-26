@@ -99,15 +99,15 @@ export default function Navbar() {
               variants={logoVariants}
             >
               <Link to="/" className="flex items-center">
-                <span className="font-bold text-2xl bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">
-                  AI Levate
+                <span className="font-bold text-2xl md:text-2xl lg:text-3xl bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">
+                  AILevate
                 </span>
               </Link>
             </motion.div>
             
             {/* Desktop Navigation */}
             <motion.div 
-              className="hidden md:flex space-x-8"
+              className="hidden md:flex space-x-6 lg:space-x-8"
               initial="hidden"
               animate="visible"
               variants={navVariants}
