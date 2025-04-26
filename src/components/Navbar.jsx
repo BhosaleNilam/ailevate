@@ -95,7 +95,7 @@ export default function Navbar() {
         variants={navVariants}
         className={`fixed w-full z-50 transition-all duration-500 ${
           scrolled 
-            ? 'bg-purple-900/80 backdrop-blur-xl shadow-purple-900/30' 
+            ? 'bg-navy-900/80 backdrop-blur-xl shadow-navy-900/30' 
             : 'bg-transparent py-4'
         }`}
       >
@@ -141,17 +141,17 @@ export default function Navbar() {
                     {isActive(link.path) ? (
                       <motion.div
                         layoutId="navActiveIndicator"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-400 to-purple-600"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-navy-400 to-navy-600"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
                       />
                     ) : (
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-400/0 via-purple-500/0 to-purple-600/0 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-navy-400/0 via-navy-500/0 to-navy-600/0 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
                     )}
                     
                     {/* Hover effect */}
-                    <div className="absolute inset-0 bg-purple-500/10 rounded-md scale-0 group-hover:scale-100 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-navy-500/10 rounded-md scale-0 group-hover:scale-100 transition-transform duration-300" />
                   </Link>
                 </motion.div>
               ))}
@@ -162,7 +162,7 @@ export default function Navbar() {
               >
                 <Link
                   to="/get-started"
-                  className="nav-button bg-purple-600 hover:bg-purple-500 text-white px-5 py-2 rounded-lg font-medium transition-all duration-200"
+                  className="nav-button bg-navy-600 hover:bg-navy-500 text-white px-5 py-2 rounded-lg font-medium transition-all duration-200"
                 >
                   Get Started
                 </Link>
@@ -203,7 +203,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, height: 'auto', y: 0 }}
                 exit={{ opacity: 0, height: 0, y: -10 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="md:hidden overflow-y-auto max-h-[70vh] glass-card my-4 rounded-lg border border-purple-500/20 hide-scrollbar"
+                className="md:hidden overflow-y-auto max-h-[70vh] glass-card my-4 rounded-lg border border-navy-500/20 hide-scrollbar"
               >
                 <div className="p-4 space-y-4">
                   {navLinks.map((link, index) => (
@@ -218,8 +218,8 @@ export default function Navbar() {
                         onClick={() => setIsOpen(false)}
                         className={`block py-3 px-4 text-lg rounded-md transition-all duration-200 ${
                           isActive(link.path)
-                            ? 'gradient-text font-semibold bg-purple-500/10'
-                            : 'text-gray-300 hover:text-white hover:bg-purple-500/5'
+                            ? 'gradient-text font-semibold bg-navy-500/10'
+                            : 'text-gray-300 hover:text-white hover:bg-navy-500/5'
                         }`}
                       >
                         {link.name}
@@ -235,7 +235,7 @@ export default function Navbar() {
                     <Link
                       to="/get-started"
                       onClick={() => setIsOpen(false)}
-                      className="block nav-button bg-purple-600 hover:bg-purple-500 text-white py-3 px-4 rounded-lg font-medium text-center transition-all duration-200"
+                      className="block nav-button bg-navy-600 hover:bg-navy-500 text-white py-3 px-4 rounded-lg font-medium text-center transition-all duration-200"
                     >
                       Get Started
                     </Link>
