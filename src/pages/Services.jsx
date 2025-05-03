@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedHeading from '../components/AnimatedHeading';
 import { ArrowRightIcon, LightBulbIcon, BoltIcon, CubeIcon, ChatBubbleBottomCenterTextIcon, 
   ChartBarIcon, ClockIcon, CogIcon, ServerIcon } from '@heroicons/react/24/outline';
@@ -118,7 +118,38 @@ export default function Services() {
 
   return (
     <div className="min-h-screen pt-20 pb-24 bg-slate-950">
-      <div className="container mx-auto px-4 md:px-6">
+      {/* Background gradient and shapes */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 -z-10" />
+      
+      {/* Animated shapes */}
+      <div className="absolute inset-0 overflow-hidden -z-5">
+        <motion.div 
+          className="absolute top-1/4 left-10 w-64 h-64 rounded-full bg-teal-500/10 blur-3xl"
+          animate={{
+            x: [0, 50, 0],
+            y: [0, 30, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-1/3 right-10 w-72 h-72 rounded-full bg-blue-500/10 blur-3xl"
+          animate={{
+            x: [0, -30, 0],
+            y: [0, 50, 0],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+      </div>
+
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <motion.div 
@@ -205,6 +236,190 @@ export default function Services() {
               </motion.div>
             ))}
           </motion.div>
+
+          {/* Process Steps Section */}
+          <section className="mt-32 py-20 bg-slate-900/70 rounded-2xl">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <motion.div 
+                className="text-center mb-16"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <AnimatedHeading 
+                  tag="h2" 
+                  text="Our Implementation Process" 
+                  className="text-3xl sm:text-4xl font-bold mb-6 text-animate-gradient"
+                  animation="fadeIn"
+                />
+                <p className="text-gray-300 max-w-3xl mx-auto">
+                  Our streamlined process ensures we deliver high-quality, effective AI solutions tailored to your specific needs.
+                </p>
+              </motion.div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {[
+                  {
+                    step: "1",
+                    icon: "🔍",
+                    title: "Discovery",
+                    description: "We analyze your business needs, challenges, and goals to identify where AI can make the biggest impact."
+                  },
+                  {
+                    step: "2",
+                    icon: "✏️",
+                    title: "Design",
+                    description: "Our experts design a customized AI solution that addresses your specific requirements and integrates with your systems."
+                  },
+                  {
+                    step: "3",
+                    icon: "💻",
+                    title: "Development",
+                    description: "We build and test your solution, ensuring it meets our high standards for performance, security, and usability."
+                  },
+                  {
+                    step: "4",
+                    icon: "🚀",
+                    title: "Deployment",
+                    description: "We implement the solution, train your team, and provide ongoing support to ensure long-term success."
+                  }
+                ].map((step, index) => (
+                  <motion.div
+                    key={index}
+                    className="relative glass-card rounded-xl p-8 text-center"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  >
+                    <div className="absolute top-4 left-4">
+                      <div className="w-8 h-8 rounded-full bg-teal-400 flex items-center justify-center text-slate-900 font-bold">
+                        {step.step}
+                      </div>
+                    </div>
+                    
+                    <div className="text-4xl mb-4">{step.icon}</div>
+                    <h3 className="text-xl font-bold mb-4 text-white">{step.title}</h3>
+                    <p className="text-gray-300">{step.description}</p>
+                    
+                    {index < 3 && (
+                      <div className="absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 hidden lg:block">
+                        <div className="w-8 h-0.5 bg-teal-400/30"></div>
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Why Choose Us Section */}
+          <section className="mt-32 py-20 bg-slate-900/70 rounded-2xl">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <motion.div 
+                className="text-center mb-16"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <AnimatedHeading 
+                  tag="h2" 
+                  text="Why Choose AiLevate" 
+                  className="text-3xl sm:text-4xl font-bold mb-6 text-animate-gradient"
+                  animation="fadeIn"
+                />
+                <p className="text-gray-300 max-w-3xl mx-auto">
+                  Our unique approach combines cutting-edge AI technology with deep industry expertise to deliver solutions that truly transform your business.
+                </p>
+              </motion.div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                {/* Left Column - Features */}
+                <div className="space-y-8">
+                  {[
+                    {
+                      icon: "🧠",
+                      title: "Customized AI Solutions",
+                      description: "We don't believe in one-size-fits-all. Every AI solution we build is tailored to your specific business challenges and goals."
+                    },
+                    {
+                      icon: "🏆",
+                      title: "Industry Expertise",
+                      description: "Our team combines AI specialists with industry veterans who understand your market's unique demands and opportunities."
+                    },
+                    {
+                      icon: "🔄",
+                      title: "Seamless Integration",
+                      description: "Our solutions integrate smoothly with your existing systems and workflows, minimizing disruption while maximizing impact."
+                    },
+                    {
+                      icon: "🚀",
+                      title: "Ongoing Support & Evolution",
+                      description: "We provide continuous support and regularly update our solutions to adapt to your changing business needs."
+                    }
+                  ].map((item, index) => (
+                    <motion.div 
+                      key={index}
+                      className="flex gap-4 items-start p-6 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 transition-colors"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1, duration: 0.5 }}
+                    >
+                      <div className="text-3xl">{item.icon}</div>
+                      <div>
+                        <h3 className="text-xl font-semibold mb-2 text-white">{item.title}</h3>
+                        <p className="text-gray-300">{item.description}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Right Column - Results Card */}
+                <motion.div
+                  className="lg:sticky lg:top-24"
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7 }}
+                >
+                  <div className="relative max-w-md mx-auto">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-teal-400 to-blue-500 rounded-lg blur-lg opacity-75 animate-pulse"></div>
+                    <div className="relative glass-card rounded-lg p-8">
+                      <div className="text-4xl mb-4">📈</div>
+                      <h3 className="text-2xl font-bold mb-4 text-white">Proven Results</h3>
+                      <p className="text-gray-300 mb-4">Our clients typically see:</p>
+                      <ul className="space-y-3">
+                        {[
+                          "40% increase in operational efficiency",
+                          "60% reduction in response time",
+                          "35% cost savings through automation",
+                          "95% customer satisfaction with AI interactions"
+                        ].map((stat, index) => (
+                          <motion.li
+                            key={index}
+                            className="flex items-center gap-2 text-gray-200"
+                            initial={{ opacity: 0, x: -10 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.3 + (index * 0.1) }}
+                          >
+                            <svg className="w-5 h-5 text-teal-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
+                            </svg>
+                            <span>{stat}</span>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </section>
 
           {/* CTA Section */}
           <motion.div

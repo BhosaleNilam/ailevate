@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import AnimatedHeading from '../components/AnimatedHeading';
 import ParticlesBackground from '../components/ParticlesBackground';
 import heroImage from '../images/HomePageImage.png';
+import image1 from '../assets/image1.jpeg';
+import image2 from '../assets/image2.jpeg';
+import image3 from '../assets/image3.jpeg';
+import image5 from '../assets/image5.jpeg';
 import '../styles/custom.css';
 
 export default function Home() {
+  const floatingAnimation = useAnimation();
+  const [currentStep, setCurrentStep] = React.useState(1);
+  
+  useEffect(() => {
+    floatingAnimation.start({
+      y: [0, -15, 0],
+      transition: {
+        duration: 6,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }
+    });
+  }, [floatingAnimation]);
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -71,84 +89,138 @@ export default function Home() {
     "Real-time Insights"
   ];
 
+  const handleStepChange = (step) => {
+    setCurrentStep(step);
+  };
+
   return (
     <div className="relative">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 -z-10" />
       
+      {/* Animated shapes */}
+      <div className="absolute inset-0 overflow-hidden -z-5">
+        <motion.div 
+          className="absolute top-1/4 left-10 w-64 h-64 rounded-full bg-teal-500/10 blur-3xl"
+          animate={{
+            x: [0, 50, 0],
+            y: [0, 30, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-1/3 right-10 w-72 h-72 rounded-full bg-blue-500/10 blur-3xl"
+          animate={{
+            x: [0, -30, 0],
+            y: [0, 50, 0],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+        <motion.div 
+          className="absolute top-2/3 left-1/3 w-80 h-80 rounded-full bg-purple-500/5 blur-3xl"
+          animate={{
+            x: [0, 40, 0],
+            y: [0, -40, 0],
+          }}
+          transition={{
+            duration: 30,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+      </div>
+      
       {/* Animated particles background */}
-      <ParticlesBackground count={60} maxSize={6} maxDuration={25} />
+      <ParticlesBackground count={80} maxSize={6} maxDuration={25} />
 
       {/* Hero section */}
-      <section className="relative pt-20 pb-20 overflow-hidden">
+      <section className="relative min-h-screen flex items-center pt-20 pb-20 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Hero content */}
           <motion.div 
-            className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12"
+            className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 pt-12"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
-            <motion.div className="flex-1 text-center lg:text-left" variants={itemVariants}>
-              <AnimatedHeading 
-                tag="h1" 
-                text="Elevate Your Business with AI Solutions" 
-                className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-animate-gradient"
-                animation="fadeIn"
-                splitWords={true}
-              />
-              
-              <motion.p 
-                className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0"
-                variants={itemVariants}
+            {/* Left column */}
+            <motion.div className="flex-1 text-left max-w-2xl" variants={itemVariants}>
+              <motion.div
+                className="inline-block mb-6 px-5 py-2 rounded-full bg-gradient-to-r from-teal-500/20 to-blue-500/20 border border-teal-400/30 text-teal-300 text-sm font-medium backdrop-blur-sm"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(45, 212, 191, 0.3)" }}
               >
-                We combine cutting-edge artificial intelligence with industry expertise to transform how your business operates and delivers value.
-              </motion.p>
-              
-              <motion.div 
-                className="flex flex-wrap gap-4 justify-center lg:justify-start mb-8"
-                variants={itemVariants}
-              >
-                {features.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex items-center gap-2"
-                    custom={index}
-                    variants={featureVariants}
-                  >
-                    <CheckCircleIcon className="h-5 w-5 text-teal-400" />
-                    <span className="text-gray-200">{feature}</span>
-                  </motion.div>
-                ))}
+                <span className="flex items-center gap-2">
+                  <span className="animate-pulse">✨</span>
+                  AI-Powered Growth Solutions
+                </span>
               </motion.div>
               
-              <motion.div variants={itemVariants} className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                <Link to="/services">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-6 py-3 rounded-lg font-semibold bg-gradient-to-r from-teal-400 to-blue-500 text-white shadow-lg"
-                  >
-                    Explore Solutions
-                  </motion.button>
-                </Link>
+              <motion.h1 
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-br from-white via-teal-200 to-cyan-200"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
+                style={{
+                  lineHeight: '1.2',
+                  letterSpacing: '-0.02em',
+                  textShadow: '0 0 80px rgba(45, 212, 191, 0.3)',
+                  maxWidth: '95%'
+                }}
+              >
+                We Build Intelligent AI Workflows That Drive Real Business Growth
+              </motion.h1>
+              
+              <motion.p 
+                className="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed max-w-xl"
+                variants={itemVariants}
+              >
+                From lead gen to operations, we automate the busywork so you can scale with confidence.
+              </motion.p>
+              
+              <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
                 <Link to="/contact">
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ 
+                      scale: 1.05,
+                      boxShadow: '0 0 30px rgba(45, 212, 191, 0.5)'
+                    }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-6 py-3 rounded-lg font-semibold border border-teal-400 text-teal-400 hover:bg-teal-400/10"
+                    className="px-8 py-4 rounded-xl font-semibold bg-gradient-to-r from-teal-400 via-cyan-400 to-blue-500 text-white shadow-lg text-lg relative overflow-hidden group"
+                    style={{
+                      backgroundSize: '200% auto'
+                    }}
                   >
-                    Contact Us
+                    <span className="relative z-10">Book Your Free Workflow Audit</span>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-teal-500 via-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{
+                        filter: 'blur(15px)',
+                        transform: 'scale(1.2)'
+                      }}
+                    />
                   </motion.button>
                 </Link>
               </motion.div>
             </motion.div>
             
+            {/* Right column - Hero image */}
             <motion.div 
               className="flex-1 flex justify-center lg:justify-end"
               variants={itemVariants}
             >
               <motion.div
-                className="relative w-full max-w-md"
+                className="relative w-full max-w-xl" 
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ 
                   opacity: 1, 
@@ -161,35 +233,40 @@ export default function Home() {
                   } 
                 }}
                 whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+                  scale: 1.02,
                   transition: { duration: 0.5 }
                 }}
               >
-                <motion.img
-                  src={heroImage}
-                  alt="AI Technology"
-                  className="w-full h-auto rounded-2xl shadow-2xl"
+                {/* Glowing background effect */}
+                <motion.div
+                  className="absolute -inset-4 bg-gradient-to-r from-teal-500/20 via-cyan-500/20 to-blue-500/20 rounded-2xl blur-3xl"
                   animate={{
-                    boxShadow: ["0px 0px 0px rgba(0,209,255,0.3)", "0px 0px 30px rgba(0,209,255,0.6)", "0px 0px 0px rgba(0,209,255,0.3)"],
+                    opacity: [0.5, 0.8, 0.5],
+                    scale: [0.98, 1.02, 0.98]
                   }}
                   transition={{
-                    duration: 3,
+                    duration: 4,
                     repeat: Infinity,
                     repeatType: "reverse"
                   }}
                 />
-                <motion.div 
-                  className="absolute inset-0 rounded-2xl pointer-events-none"
+                
+                <motion.img
+                  src={heroImage}
+                  alt="AI Technology"
+                  className="relative w-full h-auto rounded-2xl shadow-2xl"
+                  style={{
+                    filter: 'drop-shadow(0 0 30px rgba(45, 212, 191, 0.3))'
+                  }}
                   animate={{
-                    background: [
-                      "linear-gradient(135deg, rgba(20,184,166,0.2) 0%, rgba(56,189,248,0.2) 100%)",
-                      "linear-gradient(135deg, rgba(56,189,248,0.2) 0%, rgba(20,184,166,0.2) 100%)",
-                      "linear-gradient(135deg, rgba(20,184,166,0.2) 0%, rgba(56,189,248,0.2) 100%)"
-                    ]
+                    boxShadow: [
+                      '0 0 0 rgba(45, 212, 191, 0.3)',
+                      '0 0 50px rgba(45, 212, 191, 0.6)',
+                      '0 0 0 rgba(45, 212, 191, 0.3)'
+                    ],
                   }}
                   transition={{
-                    duration: 5,
+                    duration: 3,
                     repeat: Infinity,
                     repeatType: "reverse"
                   }}
@@ -201,8 +278,36 @@ export default function Home() {
       </section>
       
       {/* Features section */}
-      <section className="py-20 bg-slate-800/50 mt-64">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-slate-800/50 mt-64 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial from-teal-500/5 to-transparent opacity-70"></div>
+        
+        {/* Decorative elements */}
+        <motion.div 
+          className="absolute top-20 left-10 w-32 h-32 rounded-full border border-teal-500/30"
+          animate={{
+            rotate: 360,
+            opacity: [0.2, 0.5, 0.2]
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-20 right-10 w-64 h-64 rounded-full border-2 border-blue-500/20"
+          animate={{
+            rotate: -360,
+            opacity: [0.1, 0.3, 0.1]
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div 
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
@@ -258,8 +363,140 @@ export default function Home() {
         </div>
       </section>
       
+      {/* Why Choose Us section */}
+      <section className="py-20 bg-slate-900/70">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className="text-gray-300 max-w-3xl mx-auto">
+              Our unique approach combines cutting-edge AI technology with deep industry expertise to deliver solutions that truly transform your business.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            {/* Left Column - Features */}
+            <div className="space-y-8">
+              {[
+                {
+                  icon: "🧠",
+                  title: "Customized AI Solutions",
+                  description: "We don't believe in one-size-fits-all. Every AI solution we build is tailored to your specific business challenges and goals."
+                },
+                {
+                  icon: "🏆",
+                  title: "Industry Expertise",
+                  description: "Our team combines AI specialists with industry veterans who understand your market's unique demands and opportunities."
+                },
+                {
+                  icon: "🔄",
+                  title: "Seamless Integration",
+                  description: "Our solutions integrate smoothly with your existing systems and workflows, minimizing disruption while maximizing impact."
+                },
+                {
+                  icon: "🚀",
+                  title: "Ongoing Support & Evolution",
+                  description: "We provide continuous support and regularly update our solutions to adapt to your changing business needs."
+                }
+              ].map((item, index) => (
+                <motion.div 
+                  key={index}
+                  className="flex gap-4 items-start p-6 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 transition-colors"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                >
+                  <div className="text-3xl">{item.icon}</div>
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2 text-white">{item.title}</h3>
+                    <p className="text-gray-300">{item.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Right Column - Results Card */}
+            <motion.div
+              className="lg:sticky lg:top-24"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="relative max-w-md mx-auto">
+                <div className="absolute -inset-1 bg-gradient-to-r from-teal-400 to-blue-500 rounded-lg blur-lg opacity-75 animate-pulse"></div>
+                <div className="relative glass-card rounded-lg p-8">
+                  <div className="text-4xl mb-4">📈</div>
+                  <h3 className="text-2xl font-bold mb-4 text-white">Proven Results</h3>
+                  <p className="text-gray-300 mb-4">Our clients typically see:</p>
+                  <ul className="space-y-3">
+                    {[
+                      "40% increase in operational efficiency",
+                      "60% reduction in response time",
+                      "35% cost savings through automation",
+                      "95% customer satisfaction with AI interactions"
+                    ].map((stat, index) => (
+                      <motion.li
+                        key={index}
+                        className="flex items-center gap-2 text-gray-200"
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 + (index * 0.1) }}
+                      >
+                        <svg className="w-5 h-5 text-teal-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
+                        </svg>
+                        <span>{stat}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+      
+      {/* How It Works section */}
+      <section className="py-24 relative overflow-hidden bg-slate-900">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* How It Works content */}
+          {/* ... */}
+        </div>
+      </section>
+      
       {/* Testimonials section */}
       <section className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Testimonials content */}
+          {/* ... */}
+        </div>
+      </section>
+      
+      {/* CTA section */}
+      <section className="py-20 bg-slate-800/50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* CTA content */}
+          {/* ... */}
+        </div>
+      </section>
+      
+      {/* The Ailevate Method Section */}
+      <section className="py-24 relative overflow-hidden bg-slate-900">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* The Ailevate Method content */}
+          {/* ... */}
+        </div>
+      </section>
+
+      {/* Process Steps Section */}
+      <section className="py-24 relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             className="text-center mb-16"
@@ -270,89 +507,69 @@ export default function Home() {
           >
             <AnimatedHeading 
               tag="h2" 
-              text="What Our Clients Say" 
+              text="Our Implementation Process" 
               className="text-3xl sm:text-4xl font-bold mb-6 text-animate-gradient"
-              animation="highlightIn"
+              animation="fadeIn"
             />
             <p className="text-gray-300 max-w-3xl mx-auto">
-              Companies across industries are achieving remarkable results with our AI solutions.
+              Our streamlined process ensures we deliver high-quality, effective AI solutions tailored to your specific needs.
             </p>
           </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                quote: "AiLevate's analytics solution helped us increase our conversion rate by 40% within just three months.",
-                author: "Sarah Johnson",
-                company: "Retail Solutions Inc."
+                step: "1",
+                icon: "🔍",
+                title: "Discovery",
+                description: "We analyze your business needs, challenges, and goals to identify where AI can make the biggest impact."
               },
               {
-                quote: "The predictive modeling tools have transformed our supply chain management. We've reduced costs by 25%.",
-                author: "Michael Chen",
-                company: "Global Logistics"
+                step: "2",
+                icon: "✏️",
+                title: "Design",
+                description: "Our experts design a customized AI solution that addresses your specific requirements and integrates with your systems."
               },
               {
-                quote: "Their AI chatbot handles over 70% of our customer inquiries, freeing our team to focus on complex issues.",
-                author: "Emily Rodriguez",
-                company: "CustomerFirst Services"
+                step: "3",
+                icon: "💻",
+                title: "Development",
+                description: "We build and test your solution, ensuring it meets our high standards for performance, security, and usability."
+              },
+              {
+                step: "4",
+                icon: "🚀",
+                title: "Deployment",
+                description: "We implement the solution, train your team, and provide ongoing support to ensure long-term success."
               }
-            ].map((testimonial, index) => (
+            ].map((step, index) => (
               <motion.div
                 key={index}
-                className="glass-card rounded-xl p-6 shadow-lg"
-                initial={{ opacity: 0, y: 30 }}
+                className="relative glass-card rounded-xl p-8 text-center"
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                whileHover={{ y: -5, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
               >
-                <div className="mb-4 text-teal-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                  </svg>
+                <div className="absolute top-4 left-4">
+                  <div className="w-8 h-8 rounded-full bg-teal-400 flex items-center justify-center text-slate-900 font-bold">
+                    {step.step}
+                  </div>
                 </div>
-                <p className="text-gray-300 mb-4">{testimonial.quote}</p>
-                <div>
-                  <p className="font-medium text-white">{testimonial.author}</p>
-                  <p className="text-gray-400 text-sm">{testimonial.company}</p>
-                </div>
+                
+                <div className="text-4xl mb-4">{step.icon}</div>
+                <h3 className="text-xl font-bold mb-4 text-white">{step.title}</h3>
+                <p className="text-gray-300">{step.description}</p>
+                
+                {index < 3 && (
+                  <div className="absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 hidden lg:block">
+                    <div className="w-8 h-0.5 bg-teal-400/30"></div>
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-      
-      {/* CTA section */}
-      <section className="py-20 bg-slate-800/50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            className="text-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <AnimatedHeading 
-              tag="h2" 
-              text="Ready to Transform Your Business?" 
-              className="text-3xl sm:text-4xl font-bold mb-6 text-animate-gradient"
-              animation="scaleIn"
-            />
-            <p className="text-gray-300 max-w-3xl mx-auto mb-8">
-              Join the hundreds of businesses already leveraging our AI solutions to drive growth,
-              efficiency, and innovation.
-            </p>
-            
-            <Link to="/contact">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="btn-glow"
-              >
-                Get Started Today
-              </motion.button>
-            </Link>
-          </motion.div>
         </div>
       </section>
     </div>

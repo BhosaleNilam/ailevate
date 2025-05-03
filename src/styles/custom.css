@@ -1,16 +1,14 @@
 /* Modern Gradient Effects */
 .glass-card {
-  background: rgba(13, 148, 136, 0.1);
-  backdrop-filter: blur(16px);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.3);
   transition: all 0.3s ease;
 }
 
 .glass-card:hover {
-  background: rgba(13, 148, 136, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  transform: translateY(-5px);
+  background: rgba(15, 23, 42, 0.7);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .neon-text {
@@ -47,26 +45,16 @@
   display: none;  /* Chrome, Safari and Opera */
 }
 
-.thin-scrollbar {
+.scrollbar-thin {
   scrollbar-width: thin;
-  scrollbar-color: rgba(45, 212, 191, 0.3) transparent;
 }
 
-.thin-scrollbar::-webkit-scrollbar {
-  width: 3px;
+.scrollbar-thumb-teal-500\/30 {
+  scrollbar-color: rgba(20, 184, 166, 0.3) transparent;
 }
 
-.thin-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.thin-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(45, 212, 191, 0.3);
-  border-radius: 3px;
-}
-
-.thin-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(45, 212, 191, 0.5);
+.scrollbar-track-slate-800\/30 {
+  scrollbar-track-color: rgba(30, 41, 59, 0.3);
 }
 
 /* Animated Background Elements */
@@ -231,41 +219,32 @@
 
 /* Modern Button Styles */
 .btn-glow {
-  position: relative;
-  background: linear-gradient(45deg, #2dd4bf, #3b82f6);
-  border: none;
+  background: linear-gradient(135deg, #2dd4bf, #0ea5e9);
   color: white;
-  padding: 15px 30px;
-  border-radius: 12px;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
-.btn-glow:before {
+.btn-glow::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: 0.5s;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #2dd4bf, #0ea5e9);
+  z-index: -1;
+  filter: blur(15px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.btn-glow:hover:before {
-  left: 100%;
-}
-
-.btn-glow:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(45, 212, 191, 0.3);
+.btn-glow:hover::before {
+  opacity: 0.7;
 }
 
 /* Card Hover Effects */
@@ -387,12 +366,18 @@
 }
 
 .text-animate-gradient {
-  background: linear-gradient(90deg, #2dd4bf, #0ea5e9, #3b82f6, #2dd4bf);
-  background-size: 300% 100%;
-  animation: text-shimmer 4s infinite;
+  background: linear-gradient(-45deg, #2dd4bf, #0ea5e9, #6366f1);
+  background-size: 200% 200%;
+  animation: gradient 6s ease infinite;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Sliding underline effect */
@@ -470,4 +455,28 @@ body::after {
 
 .nav-button:active {
   transform: translateY(0);
+}
+
+/* Perspective */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* Radial gradient */
+.bg-gradient-radial {
+  background-image: radial-gradient(var(--tw-gradient-stops));
+}
+
+/* Animation utilities */
+.animate-gradient-x {
+  animation: gradient-x 15s ease infinite;
+}
+
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 } 
