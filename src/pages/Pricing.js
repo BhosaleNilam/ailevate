@@ -19,9 +19,7 @@ const Pricing = () => {
           transition={{ duration: 0.8 }}
         >
           <h1 className="main-headline">
-            Built for Operators.
-            <br />
-            Priced for Outcomes.
+            Built for Operators. Priced for Outcomes.
           </h1>
           <motion.p 
             className="subheadline"
