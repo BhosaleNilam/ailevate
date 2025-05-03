@@ -9,7 +9,13 @@ export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: '',
+    role: '',
+    companyName: '',
+    website: '',
+    phone: '',
+    companySize: '',
+    annualRevenue: '',
+    projectBudget: '',
     message: ''
   });
   
@@ -19,22 +25,32 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    console.log('Form submitted:', formData);
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    
-    // Reset form after showing success message
-    setTimeout(() => {
-      setIsSuccess(false);
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-      });
-    }, 3000);
+    try {
+      // Here you would typically send the data to your backend
+      console.log('Form submitted:', formData);
+      setIsSuccess(true);
+      
+      // Reset form after showing success message
+      setTimeout(() => {
+        setIsSuccess(false);
+        setFormData({
+          name: '',
+          email: '',
+          role: '',
+          companyName: '',
+          website: '',
+          phone: '',
+          companySize: '',
+          annualRevenue: '',
+          projectBudget: '',
+          message: ''
+        });
+      }, 3000);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -83,39 +99,29 @@ export default function Contact() {
           {/* Section Header */}
           <motion.div 
             className="mb-16"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
             <motion.div 
-              variants={itemVariants}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
               className="inline-block px-4 py-1.5 mb-4 rounded-full border border-teal-500/30 bg-teal-900/20"
             >
-              <span className="text-sm font-medium tracking-wide text-center bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">GET IN TOUCH</span>
+              <span className="text-sm font-medium tracking-wide text-center bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">
+                LET'S GET TO KNOW YOU
+              </span>
             </motion.div>
             
             <AnimatedHeading
               tag="h1"
-              text="Let's Start a Conversation"
+              text="Speak to an expert and start a plan for your project"
               className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8"
               animation="highlightIn"
               wordHighlight={[3]}
               highlightClass="bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent"
             />
-            
-            <motion.div 
-              className="space-y-4 text-lg text-gray-300"
-              variants={itemVariants}
-            >
-              <div className="flex items-start space-x-3">
-                <span className="text-teal-400 text-xl mt-0.5">✦</span>
-                <p>Hassle-Free Support: Connect with our team anytime</p>
-              </div>
-              <div className="flex items-start space-x-3">
-                <span className="text-teal-400 text-xl mt-0.5">✦</span>
-                <p>Schedule a Demo: Experience our AI solutions firsthand</p>
-              </div>
-            </motion.div>
           </motion.div>
           
           {/* Contact Cards and Form Layout */}
@@ -268,86 +274,199 @@ export default function Contact() {
               )}
               
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-gray-300 mb-2">Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
-                    placeholder="Jane Smith"
-                    required
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Name Field */}
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                      Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                      placeholder="Jane Doe"
+                      required
+                    />
+                  </div>
+
+                  {/* Email Field */}
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                      Email <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                      placeholder="example@gmail.com"
+                      required
+                    />
+                  </div>
+
+                  {/* Role Field */}
+                  <div>
+                    <label htmlFor="role" className="block text-sm font-medium text-gray-300 mb-2">
+                      Your Role within Organization <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="role"
+                      name="role"
+                      value={formData.role}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                      placeholder="e.g. CTO, Project Manager, etc."
+                      required
+                    />
+                  </div>
+
+                  {/* Company Name Field */}
+                  <div>
+                    <label htmlFor="companyName" className="block text-sm font-medium text-gray-300 mb-2">
+                      Company Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="companyName"
+                      name="companyName"
+                      value={formData.companyName}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                      placeholder="Your company name"
+                      required
+                    />
+                  </div>
+
+                  {/* Website Field */}
+                  <div>
+                    <label htmlFor="website" className="block text-sm font-medium text-gray-300 mb-2">
+                      Website (Optional)
+                    </label>
+                    <input
+                      type="url"
+                      id="website"
+                      name="website"
+                      value={formData.website}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                      placeholder="https://yourcompany.com"
+                    />
+                  </div>
+
+                  {/* Phone Number Field */}
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-2">
+                      Phone Number (Optional)
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                      placeholder="+1 (555) 555-5555"
+                    />
+                  </div>
+
+                  {/* Company Size Field */}
+                  <div>
+                    <label htmlFor="companySize" className="block text-sm font-medium text-gray-300 mb-2">
+                      Company Size <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="companySize"
+                      name="companySize"
+                      value={formData.companySize}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                      required
+                    >
+                      <option value="">Select company size</option>
+                      <option value="1-10">1-10 employees</option>
+                      <option value="11-50">11-50 employees</option>
+                      <option value="51-200">51-200 employees</option>
+                      <option value="201-500">201-500 employees</option>
+                      <option value="501+">501+ employees</option>
+                    </select>
+                  </div>
+
+                  {/* Annual Revenue Field */}
+                  <div>
+                    <label htmlFor="annualRevenue" className="block text-sm font-medium text-gray-300 mb-2">
+                      Annual Revenue <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="annualRevenue"
+                      name="annualRevenue"
+                      value={formData.annualRevenue}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                      required
+                    >
+                      <option value="">Select annual revenue</option>
+                      <option value="<1M">Less than $1M</option>
+                      <option value="1M-5M">$1M - $5M</option>
+                      <option value="5M-20M">$5M - $20M</option>
+                      <option value="20M-50M">$20M - $50M</option>
+                      <option value="50M+">$50M+</option>
+                    </select>
+                  </div>
+
+                  {/* Project Budget Field */}
+                  <div>
+                    <label htmlFor="projectBudget" className="block text-sm font-medium text-gray-300 mb-2">
+                      Project Budget <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="projectBudget"
+                      name="projectBudget"
+                      value={formData.projectBudget}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                      required
+                    >
+                      <option value="">Select project budget</option>
+                      <option value="<50K">Less than $50K</option>
+                      <option value="50K-100K">$50K - $100K</option>
+                      <option value="100K-500K">$100K - $500K</option>
+                      <option value="500K+">$500K+</option>
+                    </select>
+                  </div>
                 </div>
-                
+
+                {/* Message Field */}
                 <div>
-                  <label htmlFor="email" className="block text-gray-300 mb-2">Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
-                    placeholder="jane@example.com"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="subject" className="block text-gray-300 mb-2">Subject of Interest</label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
-                    placeholder="AI Consulting Services"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="message" className="block text-gray-300 mb-2">Message</label>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
+                    How Can We Help? <span className="text-red-500">*</span>
+                  </label>
                   <textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    rows="4"
+                    rows={4}
                     className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
-                    placeholder="Tell us about your project or question..."
+                    placeholder="Please describe your project needs and how we can assist you"
                     required
-                  ></textarea>
-                </div>
-                
-                <div className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    id="subscribe"
-                    className="w-4 h-4 rounded border-gray-600 text-teal-600 focus:ring-teal-500"
                   />
-                  <label htmlFor="subscribe" className="ml-2 text-sm text-gray-300">
-                    Subscribe to our newsletter for AI industry insights
-                  </label>
                 </div>
-                
+
+                {/* Submit Button */}
                 <motion.button
                   type="submit"
-                  className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-400 hover:to-blue-500 text-white font-medium py-3 px-4 rounded-lg w-full transition-all duration-300 flex justify-center items-center"
+                  disabled={isSubmitting}
+                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-400 hover:to-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  disabled={isSubmitting}
                 >
-                  {isSubmitting ? (
-                    <div className="flex items-center justify-center">
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                      <span>Sending...</span>
-                    </div>
-                  ) : "Send Message"}
+                  {isSubmitting ? 'Submitting...' : 'Submit'}
                 </motion.button>
               </form>
             </motion.div>
