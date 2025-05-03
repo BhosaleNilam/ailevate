@@ -1,187 +1,115 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import '../styles/custom.css';
+import { motion } from 'framer-motion';
 
-export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
-
-  const toggleMenu = () => setIsOpen(!isOpen);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location]);
-
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Services', path: '/services' },
-    { name: 'Contact', path: '/contact' }
+    { path: '/', label: 'Home' },
+    { path: '/about', label: 'About' },
+    { path: '/services', label: 'Services' },
+    { path: '/pricing', label: 'Pricing' },
+    { path: '/contact', label: 'Contact' }
   ];
 
-  const isActive = (path) => location.pathname === path;
-
-  const navVariants = {
-    hidden: { y: -20, opacity: 0 },
-    visible: { 
-      y: 0,
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const linkVariants = {
-    hidden: { y: -10, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1 
-    },
-    hover: {
-      scale: 1.05,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 10
-      }
-    }
-  };
-
-  const logoVariants = {
-    initial: { opacity: 0, scale: 0.9 },
-    animate: { 
-      opacity: 1, 
-      scale: 1,
-      transition: {
-        duration: 0.5
-      }
-    },
-    hover: {
-      scale: 1.05
-    }
-  };
-
   return (
-    <>
-      <div className="fixed top-0 left-0 w-full h-20 bg-transparent z-40"></div>
-      
-      <nav 
-        className={`fixed w-full z-50 transition-all duration-300 ${
-          scrolled 
-            ? 'py-3 bg-slate-900/90 backdrop-blur-lg shadow-lg' 
-            : 'py-4 bg-transparent'
-        }`}
-      >
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="flex justify-between items-center">
-            <motion.div
-              initial="initial"
-              animate="animate"
-              whileHover="hover"
-              variants={logoVariants}
+    <motion.nav
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        isScrolled ? 'py-4 bg-slate-900/95 backdrop-blur-lg' : 'py-6 bg-transparent'
+      }`}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center">
+            <motion.h1 
+              className="text-3xl font-bold bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 400 }}
             >
-              <Link to="/" className="flex items-center">
-                <span className="font-bold text-2xl md:text-2xl lg:text-3xl bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">
-                  AILevate
-                </span>
-              </Link>
-            </motion.div>
-            
-            {/* Desktop Navigation */}
-            <motion.div 
-              className="hidden md:flex space-x-6 lg:space-x-8"
-              initial="hidden"
-              animate="visible"
-              variants={navVariants}
-            >
-              {navLinks.map((link) => (
-                <motion.div
-                  key={link.name}
-                  variants={linkVariants}
-                  whileHover="hover"
+              AILevate
+            </motion.h1>
+          </Link>
+
+          {/* Navigation Links */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className="relative group"
+              >
+                <motion.span
+                  className={`text-lg font-medium transition-colors duration-200 ${
+                    location.pathname === link.path
+                      ? 'text-teal-400'
+                      : 'text-gray-300 hover:text-white'
+                  }`}
+                  whileHover={{ y: -2 }}
                 >
-                  <Link
-                    to={link.path}
-                    className={`font-medium transition-colors hover:text-teal-400 ${
-                      isActive(link.path)
-                        ? 'text-teal-400'
-                        : 'text-white'
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
-            
-            {/* Mobile Menu Button */}
-            <button
-              onClick={toggleMenu}
-              className="p-2 rounded-lg text-white md:hidden focus:outline-none"
-              aria-label="Toggle menu"
+                  {link.label}
+                </motion.span>
+                {/* Animated underline */}
+                <motion.div
+                  className={`absolute left-0 right-0 h-0.5 bg-gradient-to-r from-teal-400 to-cyan-400 -bottom-1 ${
+                    location.pathname === link.path ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  initial={false}
+                  animate={{
+                    width: location.pathname === link.path ? '100%' : '0%',
+                    opacity: location.pathname === link.path ? 1 : 0
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+              </Link>
+            ))}
+          </div>
+
+          {/* CTA Button */}
+          <Link to="/contact">
+            <motion.button
+              className="hidden md:block px-6 py-3 rounded-lg font-semibold bg-gradient-to-r from-teal-400 to-cyan-500 text-white shadow-lg hover:shadow-teal-500/25"
+              whileHover={{ 
+                scale: 1.05,
+                boxShadow: '0 0 20px rgba(45, 212, 191, 0.5)'
+              }}
+              whileTap={{ scale: 0.95 }}
             >
-              {isOpen ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
+              Get Started
+            </motion.button>
+          </Link>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <button className="text-white p-2">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
             </button>
           </div>
         </div>
-        
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden overflow-hidden"
-            >
-              <div className="container mx-auto px-4 py-4 bg-slate-900/90 backdrop-blur-lg">
-                <div className="flex flex-col space-y-4">
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.name}
-                      to={link.path}
-                      className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                        location.pathname === link.path
-                          ? 'bg-teal-500/10 text-teal-400'
-                          : 'text-white hover:bg-slate-800'
-                      }`}
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-    </>
+      </div>
+
+      {/* Mobile Menu (can be expanded later) */}
+      <div className="md:hidden">
+        {/* Add mobile menu implementation here */}
+      </div>
+    </motion.nav>
   );
-} 
+};
+
+export default Navbar; 

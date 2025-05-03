@@ -28,6 +28,30 @@
 }
 
 @layer components {
+  /* Navbar Styles */
+  .nav-link {
+    @apply relative text-lg font-medium transition-all duration-200
+           hover:text-teal-400 focus:outline-none focus:text-teal-400;
+  }
+
+  .nav-link::after {
+    @apply content-[''] absolute left-0 -bottom-1 w-0 h-0.5
+           bg-gradient-to-r from-teal-400 to-cyan-400
+           transition-all duration-300;
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  .nav-link.active {
+    @apply text-teal-400;
+  }
+
+  .nav-link.active::after {
+    @apply w-full;
+  }
+
   .btn-primary {
     @apply px-6 py-3 bg-primary text-dark font-medium rounded-lg 
            hover:bg-mint-dark transition-all duration-200;
