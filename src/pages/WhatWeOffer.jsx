@@ -148,8 +148,6 @@ const serviceCategories = [
 export default function WhatWeOffer() {
   const [currentCategory, setCurrentCategory] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
-  const [currentServiceIndex, setCurrentServiceIndex] = useState(0);
-  const servicesPerView = 2; // Number of services to show at once
 
   // Auto-advance slides every 5 seconds if autoplay is enabled
   React.useEffect(() => {
@@ -161,23 +159,6 @@ export default function WhatWeOffer() {
 
     return () => clearInterval(timer);
   }, [isAutoPlay]);
-
-  // Auto-scroll services every 3 seconds
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      const currentServices = serviceCategories[currentCategory].services;
-      setCurrentServiceIndex((prev) => 
-        (prev + servicesPerView >= currentServices.length) ? 0 : prev + servicesPerView
-      );
-    }, 3000);
-
-    return () => clearInterval(timer);
-  }, [currentCategory]);
-
-  // Reset service index when category changes
-  React.useEffect(() => {
-    setCurrentServiceIndex(0);
-  }, [currentCategory]);
 
   const nextCategory = () => {
     setCurrentCategory((prev) => (prev + 1) % serviceCategories.length);
@@ -230,7 +211,6 @@ export default function WhatWeOffer() {
                 onClick={() => {
                   setCurrentCategory(index);
                   setIsAutoPlay(false);
-                  setCurrentServiceIndex(0);
                 }}
                 className={`w-3 h-3 rounded-full transition-all ${
                   index === currentCategory
@@ -260,43 +240,26 @@ export default function WhatWeOffer() {
                 </h2>
               </div>
 
-              <div className="relative overflow-hidden">
-                <motion.div
-                  animate={{ y: -currentServiceIndex * 220 }} // Adjust this value based on your card height
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-6"
-                >
-                  {serviceCategories[currentCategory].services.map((service, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-                      className={`bg-slate-900/50 p-6 rounded-xl border ${serviceCategories[currentCategory].borderColor} backdrop-blur-sm hover:bg-slate-800/70 transition-all duration-300 hover:shadow-lg hover:shadow-teal-500/10`}
-                    >
-                      <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
-                        <span className="bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">✓</span>
-                        {service.title}
-                      </h3>
-                      <p className="text-gray-400">{service.description}</p>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </div>
-
-              {/* Service Navigation Indicators */}
-              <div className="flex justify-center gap-2 mt-8">
-                {Array.from({ length: Math.ceil(serviceCategories[currentCategory].services.length / servicesPerView) }).map((_, index) => (
-                  <button
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {serviceCategories[currentCategory].services.map((service, index) => (
+                  <motion.div
                     key={index}
-                    onClick={() => setCurrentServiceIndex(index * servicesPerView)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      Math.floor(currentServiceIndex / servicesPerView) === index
-                        ? 'bg-teal-500 w-6'
-                        : 'bg-slate-700 hover:bg-slate-600'
-                    }`}
-                  />
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ 
+                      scale: 1.02, 
+                      transition: { duration: 0.2 },
+                      boxShadow: '0 0 20px rgba(45, 212, 191, 0.1)'
+                    }}
+                    className={`bg-slate-900/50 p-6 rounded-xl border ${serviceCategories[currentCategory].borderColor} backdrop-blur-sm hover:bg-slate-800/70 transition-all duration-300`}
+                  >
+                    <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                      <span className="bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">✓</span>
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-400">{service.description}</p>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>
