@@ -59,21 +59,28 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen pt-32 pb-24 bg-slate-950">
-      <div className="container mx-auto px-4 md:px-6">
+    <div className="min-h-screen pt-32 pb-24 bg-slate-950 relative">
+      {/* Background decorative elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-1/2 bg-gradient-to-b from-transparent via-teal-500/5 to-transparent"></div>
+      </div>
+
+      <div className="container mx-auto px-4 md:px-6 relative">
         <div className="max-w-3xl mx-auto">
           {/* Section Header */}
           <motion.div 
             className="mb-12 text-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="inline-block px-6 py-2 mb-4 rounded-full border border-teal-500/30 bg-teal-900/20"
+              className="inline-block px-6 py-2 mb-4 rounded-full border border-teal-500/30 bg-gradient-to-r from-teal-900/30 to-blue-900/30 backdrop-blur-sm"
             >
               <span className="text-lg font-medium tracking-wide text-center bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">
                 AILevate Form
@@ -92,12 +99,13 @@ export default function Contact() {
           
           {/* Form Section */}
           <motion.div 
-            className="bg-slate-900/50 p-8 rounded-xl relative overflow-hidden border border-slate-800"
+            className="bg-slate-900/50 p-8 md:p-10 rounded-2xl relative overflow-hidden border border-slate-800/50 backdrop-blur-sm shadow-[0_0_40px_rgba(0,0,0,0.2)]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-500/20 via-teal-400/40 to-blue-500/20"></div>
+            {/* Form top gradient border */}
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-teal-500/50 to-transparent"></div>
             
             {/* Success Message */}
             {isSuccess && (
@@ -136,11 +144,11 @@ export default function Contact() {
               </motion.div>
             )}
             
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                 {/* Name Field */}
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                <div className="group">
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2 transition-colors group-hover:text-teal-400">
                     Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -149,15 +157,15 @@ export default function Contact() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white transition-all duration-300 hover:border-slate-600 hover:bg-slate-800/70"
                     placeholder="Jane Doe"
                     required
                   />
                 </div>
 
                 {/* Email Field */}
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                <div className="group">
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2 transition-colors group-hover:text-teal-400">
                     Email <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -166,15 +174,15 @@ export default function Contact() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white transition-all duration-300 hover:border-slate-600 hover:bg-slate-800/70"
                     placeholder="example@gmail.com"
                     required
                   />
                 </div>
 
                 {/* Role Field */}
-                <div>
-                  <label htmlFor="role" className="block text-sm font-medium text-gray-300 mb-2">
+                <div className="group">
+                  <label htmlFor="role" className="block text-sm font-medium text-gray-300 mb-2 transition-colors group-hover:text-teal-400">
                     Your Role within Organization <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -183,15 +191,15 @@ export default function Contact() {
                     name="role"
                     value={formData.role}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white transition-all duration-300 hover:border-slate-600 hover:bg-slate-800/70"
                     placeholder="e.g. CTO, Project Manager, etc."
                     required
                   />
                 </div>
 
                 {/* Company Name Field */}
-                <div>
-                  <label htmlFor="companyName" className="block text-sm font-medium text-gray-300 mb-2">
+                <div className="group">
+                  <label htmlFor="companyName" className="block text-sm font-medium text-gray-300 mb-2 transition-colors group-hover:text-teal-400">
                     Company Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -200,15 +208,15 @@ export default function Contact() {
                     name="companyName"
                     value={formData.companyName}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white transition-all duration-300 hover:border-slate-600 hover:bg-slate-800/70"
                     placeholder="Your company name"
                     required
                   />
                 </div>
 
                 {/* Website Field */}
-                <div>
-                  <label htmlFor="website" className="block text-sm font-medium text-gray-300 mb-2">
+                <div className="group">
+                  <label htmlFor="website" className="block text-sm font-medium text-gray-300 mb-2 transition-colors group-hover:text-teal-400">
                     Website (Optional)
                   </label>
                   <input
@@ -217,14 +225,14 @@ export default function Contact() {
                     name="website"
                     value={formData.website}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white transition-all duration-300 hover:border-slate-600 hover:bg-slate-800/70"
                     placeholder="https://yourcompany.com"
                   />
                 </div>
 
                 {/* Phone Number Field */}
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-2">
+                <div className="group">
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-2 transition-colors group-hover:text-teal-400">
                     Phone Number (Optional)
                   </label>
                   <input
@@ -233,14 +241,14 @@ export default function Contact() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white transition-all duration-300 hover:border-slate-600 hover:bg-slate-800/70"
                     placeholder="+1 (555) 555-5555"
                   />
                 </div>
 
                 {/* Company Size Field */}
-                <div>
-                  <label htmlFor="companySize" className="block text-sm font-medium text-gray-300 mb-2">
+                <div className="group">
+                  <label htmlFor="companySize" className="block text-sm font-medium text-gray-300 mb-2 transition-colors group-hover:text-teal-400">
                     Company Size <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -248,7 +256,7 @@ export default function Contact() {
                     name="companySize"
                     value={formData.companySize}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white transition-all duration-300 hover:border-slate-600 hover:bg-slate-800/70"
                     required
                   >
                     <option value="">Select company size</option>
@@ -261,8 +269,8 @@ export default function Contact() {
                 </div>
 
                 {/* Annual Revenue Field */}
-                <div>
-                  <label htmlFor="annualRevenue" className="block text-sm font-medium text-gray-300 mb-2">
+                <div className="group">
+                  <label htmlFor="annualRevenue" className="block text-sm font-medium text-gray-300 mb-2 transition-colors group-hover:text-teal-400">
                     Annual Revenue <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -270,7 +278,7 @@ export default function Contact() {
                     name="annualRevenue"
                     value={formData.annualRevenue}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white transition-all duration-300 hover:border-slate-600 hover:bg-slate-800/70"
                     required
                   >
                     <option value="">Select annual revenue</option>
@@ -283,8 +291,8 @@ export default function Contact() {
                 </div>
 
                 {/* Project Budget Field */}
-                <div>
-                  <label htmlFor="projectBudget" className="block text-sm font-medium text-gray-300 mb-2">
+                <div className="group">
+                  <label htmlFor="projectBudget" className="block text-sm font-medium text-gray-300 mb-2 transition-colors group-hover:text-teal-400">
                     Project Budget <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -292,7 +300,7 @@ export default function Contact() {
                     name="projectBudget"
                     value={formData.projectBudget}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white transition-all duration-300 hover:border-slate-600 hover:bg-slate-800/70"
                     required
                   >
                     <option value="">Select project budget</option>
@@ -304,9 +312,9 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* Message Field */}
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
+              {/* Message Field with enhanced styling */}
+              <div className="group">
+                <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2 transition-colors group-hover:text-teal-400">
                   How Can We Help? <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -315,21 +323,36 @@ export default function Contact() {
                   value={formData.message}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white"
+                  className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 text-white transition-all duration-300 hover:border-slate-600 hover:bg-slate-800/70 resize-none"
                   placeholder="Please describe your project needs and how we can assist you"
                   required
                 />
               </div>
 
-              {/* Submit Button */}
+              {/* Submit Button with enhanced styling */}
               <motion.button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-400 hover:to-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                whileHover={{ scale: 1.02 }}
+                className="w-full flex items-center justify-center py-4 px-6 rounded-lg text-base font-medium text-white bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-400 hover:to-blue-500 transition-all duration-300 shadow-lg hover:shadow-teal-500/25 disabled:opacity-50 disabled:cursor-not-allowed group"
+                whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
               >
-                {isSubmitting ? 'Submitting...' : 'Submit'}
+                {isSubmitting ? (
+                  <span className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Submitting...
+                  </span>
+                ) : (
+                  <span className="flex items-center">
+                    Submit
+                    <svg className="ml-2 h-5 w-5 transform transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </span>
+                )}
               </motion.button>
             </form>
           </motion.div>
