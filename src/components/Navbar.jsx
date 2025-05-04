@@ -34,7 +34,7 @@ const Navbar = () => {
     <motion.nav
       className={`fixed w-full z-50 transition-all duration-500 ${
         isScrolled 
-          ? 'py-4 bg-slate-900/70 backdrop-blur-xl border-b border-white/[0.05] shadow-lg shadow-slate-900/20' 
+          ? 'py-4 bg-slate-900/70 backdrop-blur-xl shadow-lg shadow-slate-900/20' 
           : 'py-6 bg-transparent'
       }`}
       initial={{ y: -100 }}
