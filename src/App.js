@@ -7,6 +7,7 @@ import About from './pages/About';
 import Blog from './pages/Blog';
 import Contact from './pages/Contact';
 import Pricing from './pages/Pricing';
+import WhatWeOffer from './pages/WhatWeOffer';
 import AnimatedBackground from './components/AnimatedBackground';
 
 function AnimatedRoutes() {
@@ -51,6 +52,7 @@ function AnimatedRoutes() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/what-we-offer" element={<WhatWeOffer />} />
           <Route path="*" element={<Home />} />
         </Routes>
       </motion.div>
