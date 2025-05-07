@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import './WhatWeOffer.css'; // We'll create this CSS file next
 
-const serviceCategories = [
+export const serviceCategories = [
   {
-    icon: "🟢",
     title: "Lead Generation & Sales Automations",
-    color: "from-teal-500/20 to-cyan-600/20",
-    borderColor: "border-teal-500/20",
-    iconBg: "bg-teal-500/20",
+    color: "cyan-400",
     services: [
       {
         title: "Multi-Source Lead Capture & Routing",
@@ -36,11 +34,8 @@ const serviceCategories = [
     ]
   },
   {
-    icon: "🔵",
     title: "Pipeline & Deal Flow Automation",
-    color: "from-cyan-500/30 to-blue-600/30",
-    borderColor: "border-blue-500/20",
-    iconBg: "bg-blue-500/20",
+    color: "blue-400",
     services: [
       {
         title: "Sales Stage Progression Automation",
@@ -61,11 +56,8 @@ const serviceCategories = [
     ]
   },
   {
-    icon: "🟣",
     title: "Internal Operations & Team Workflows",
-    color: "from-blue-500/30 to-indigo-600/30",
-    borderColor: "border-blue-500/20",
-    iconBg: "bg-blue-500/20",
+    color: "purple-400",
     services: [
       {
         title: "Task Creation & Assignment",
@@ -90,11 +82,8 @@ const serviceCategories = [
     ]
   },
   {
-    icon: "🟡",
     title: "Client-Facing Experiences",
-    color: "from-teal-400/30 to-cyan-500/30",
-    borderColor: "border-teal-400/20",
-    iconBg: "bg-teal-400/20",
+    color: "yellow-400",
     services: [
       {
         title: "Appointment Booking + Reminders",
@@ -119,11 +108,8 @@ const serviceCategories = [
     ]
   },
   {
-    icon: "🔴",
     title: "Marketing & Content Automations",
-    color: "from-cyan-400/30 to-blue-500/30",
-    borderColor: "border-cyan-400/20",
-    iconBg: "bg-cyan-400/20",
+    color: "pink-400",
     services: [
       {
         title: "AI Content Publishing Triggers",
@@ -145,36 +131,20 @@ const serviceCategories = [
   }
 ];
 
-export default function WhatWeOffer() {
-  const [currentCategory, setCurrentCategory] = useState(0);
-  const [isAutoPlay, setIsAutoPlay] = useState(true);
+export default function WhatWeOffer({ isEmbedded = false }) {
   const [hoveredService, setHoveredService] = useState(null);
-
-  // Auto-advance slides every 5 seconds if autoplay is enabled
-  React.useEffect(() => {
-    if (!isAutoPlay) return;
-    
-    const timer = setInterval(() => {
-      setCurrentCategory((prev) => (prev + 1) % serviceCategories.length);
-    }, 5000);
-
-    return () => clearInterval(timer);
-  }, [isAutoPlay]);
-
-  const nextCategory = () => {
-    setCurrentCategory((prev) => (prev + 1) % serviceCategories.length);
-    setIsAutoPlay(false);
-  };
-
-  const prevCategory = () => {
-    setCurrentCategory((prev) => (prev - 1 + serviceCategories.length) % serviceCategories.length);
-    setIsAutoPlay(false);
-  };
+  const [hoveredCategory, setHoveredCategory] = useState(null);
 
   return (
-    <div className="min-h-screen pt-28 pb-24">
+    <div className={isEmbedded ? "" : "min-h-screen pt-28 pb-24"}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-6xl mx-auto relative">
+          {/* Background effects */}
+          <div className="absolute inset-0 overflow-hidden -z-10">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-gradient-to-r from-teal-500/10 to-cyan-500/10 blur-3xl"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-gradient-to-r from-blue-500/10 to-indigo-500/10 blur-3xl"></div>
+          </div>
+          
           {/* Header Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -182,124 +152,120 @@ export default function WhatWeOffer() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h1 className="heading-lg mb-6">
-              Powerful Automation Solutions
+            <motion.div 
+              className="inline-block mb-6 px-6 py-2 rounded-full bg-gradient-to-r from-teal-500/20 to-blue-500/20 border border-teal-400/30 backdrop-blur-sm"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <span className="text-sm font-medium bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">
+                Solutions That Scale
+              </span>
+            </motion.div>
+            <h1 className="heading-lg mb-6 text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400">
+              What We Can Build for You
             </h1>
-            <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+            <p className="text-lg text-slate-400 max-w-3xl mx-auto">
               Streamline your business operations with our comprehensive suite of automation tools
             </p>
           </motion.div>
 
-          {/* Navigation Buttons */}
-          <button
-            onClick={prevCategory}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 p-3 rounded-full
-                     bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.05]
-                     backdrop-blur-sm transition-all duration-300 group"
-          >
-            <svg className="w-6 h-6 text-white/70 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <button
-            onClick={nextCategory}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 p-3 rounded-full
-                     bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.05]
-                     backdrop-blur-sm transition-all duration-300 group"
-          >
-            <svg className="w-6 h-6 text-white/70 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-
-          {/* Category Indicators */}
-          <div className="flex justify-center gap-3 mb-12">
-            {serviceCategories.map((category, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setCurrentCategory(index);
-                  setIsAutoPlay(false);
-                }}
-                className={`group relative h-3 transition-all duration-300 ${
-                  index === currentCategory ? 'w-12' : 'w-3'
-                }`}
+          {/* All Categories Grid Layout */}
+          <div className="space-y-12">
+            {serviceCategories.map((category, categoryIndex) => (
+              <motion.div 
+                key={categoryIndex}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.7, delay: categoryIndex * 0.1 }}
+                onHoverStart={() => setHoveredCategory(categoryIndex)}
+                onHoverEnd={() => setHoveredCategory(null)}
+                className="relative"
               >
-                <div className={`absolute inset-0 rounded-full transition-all duration-300
-                  ${index === currentCategory
-                    ? 'bg-gradient-to-r from-teal-400 to-cyan-400'
-                    : 'bg-white/[0.2] group-hover:bg-white/[0.3]'
-                  }`}
-                />
-              </button>
+                {/* Category Header */}
+                <motion.h2 
+                  className={`text-4xl md:text-5xl font-bold mb-10 text-${category.color} pb-3 border-b border-${category.color}/20`}
+                  whileHover={{ scale: 1.01 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  {category.title}
+                </motion.h2>
+
+                {/* Category Services */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {category.services.map((service, serviceIndex) => (
+                    <motion.div
+                      key={`${categoryIndex}-${serviceIndex}`}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      transition={{ delay: serviceIndex * 0.1 }}
+                      whileHover={{ scale: 1.02, y: -5 }}
+                      onHoverStart={() => setHoveredService(`${categoryIndex}-${serviceIndex}`)}
+                      onHoverEnd={() => setHoveredService(null)}
+                      className={`relative p-6 rounded-xl transition-all duration-300
+                        ${hoveredService === `${categoryIndex}-${serviceIndex}`
+                          ? 'bg-white/[0.1] border-white/20'
+                          : 'bg-white/[0.05] border-white/10'
+                        }
+                        hover:shadow-xl
+                        border backdrop-blur-sm ${
+                          category.color === 'cyan-400' ? 'hover:shadow-cyan-400/5' :
+                          category.color === 'blue-400' ? 'hover:shadow-blue-400/5' :
+                          category.color === 'purple-400' ? 'hover:shadow-purple-400/5' :
+                          category.color === 'yellow-400' ? 'hover:shadow-yellow-400/5' :
+                          'hover:shadow-pink-400/5'
+                        }`}
+                    >
+                      <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-3">
+                        <span className={`flex items-center justify-center w-6 h-6 rounded-full ${
+                          category.color === 'cyan-400' ? 'bg-cyan-400/20 text-cyan-400' :
+                          category.color === 'blue-400' ? 'bg-blue-400/20 text-blue-400' :
+                          category.color === 'purple-400' ? 'bg-purple-400/20 text-purple-400' :
+                          category.color === 'yellow-400' ? 'bg-yellow-400/20 text-yellow-400' :
+                          'bg-pink-400/20 text-pink-400'
+                        }`}>✓</span>
+                        {service.title}
+                      </h3>
+                      <p className="text-slate-400">{service.description}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
             ))}
           </div>
-
-          {/* Content Slideshow */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentCategory}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.5 }}
-              className="glass-card p-8 md:p-12"
-            >
-              <div className="flex items-center gap-4 mb-10">
-                <span className={`text-4xl p-4 rounded-xl ${serviceCategories[currentCategory].iconBg} animate-float`}>
-                  {serviceCategories[currentCategory].icon}
-                </span>
-                <h2 className="text-2xl md:text-3xl font-bold text-gradient-primary">
-                  {serviceCategories[currentCategory].title}
-                </h2>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {serviceCategories[currentCategory].services.map((service, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    onHoverStart={() => setHoveredService(index)}
-                    onHoverEnd={() => setHoveredService(null)}
-                    className={`relative p-6 rounded-xl transition-all duration-300
-                      ${hoveredService === index
-                        ? 'bg-white/[0.1] scale-[1.02]'
-                        : 'bg-white/[0.05]'
-                      }
-                      hover:shadow-lg hover:shadow-teal-500/5
-                      border border-white/[0.05]`}
-                  >
-                    <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
-                      <span className="text-gradient-primary">✓</span>
-                      {service.title}
-                    </h3>
-                    <p className="text-slate-400">{service.description}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
 
           {/* CTA Section */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mt-16 text-center"
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="mt-20 text-center px-8 py-10 rounded-2xl glass-card bg-gradient-to-r from-indigo-900/30 to-purple-900/30 backdrop-blur-lg border border-indigo-500/20"
           >
-            <h3 className="text-2xl font-bold text-gradient-primary mb-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="inline-block mb-6 px-6 py-2 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-400/30 backdrop-blur-sm"
+            >
+              <span className="text-sm font-medium bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                Custom Solutions
+              </span>
+            </motion.div>
+            <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-4">
               Don't see the workflow you need?
             </h3>
-            <p className="text-slate-400 mb-8">
+            <p className="text-slate-400 mb-8 max-w-2xl mx-auto">
               We build custom systems tailored to your exact process.
             </p>
             <motion.a
               href="/contact"
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.05, boxShadow: "0 0 20px 5px rgba(99, 102, 241, 0.3)" }}
               whileTap={{ scale: 0.98 }}
-              className="btn-primary"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium shadow-lg shadow-indigo-600/20 transition-all duration-300"
             >
               Talk to an Automation Architect
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

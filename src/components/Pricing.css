@@ -348,4 +348,29 @@
     font-size: 0.9375rem;
     padding: 0 0.5rem;
   }
+}
+
+/* What We Offer Section */
+.what-we-offer-section {
+  padding: 2rem 0;
+}
+
+.service-card {
+  height: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.service-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+.icon-container {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 768px) {
+  .service-categories {
+    grid-template-columns: 1fr;
+  }
 } 

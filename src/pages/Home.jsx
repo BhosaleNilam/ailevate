@@ -1,19 +1,375 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import AnimatedHeading from '../components/AnimatedHeading';
 import ParticlesBackground from '../components/ParticlesBackground';
+import IntegrationLogos from '../components/IntegrationLogos';
 import heroImage from '../images/HomePageImage.png';
 import image1 from '../assets/image1.jpeg';
 import image2 from '../assets/image2.jpeg';
 import image3 from '../assets/image3.jpeg';
-import image5 from '../assets/image5.jpeg';
+import image5 from '../assets/image4.jpeg';
 import '../styles/custom.css';
+
+const ProcessSteps = () => {
+  const [activeStep, setActiveStep] = useState(0);
+  
+  // Refs for each step
+  const stepRefs = [
+    useRef(null),
+    useRef(null),
+    useRef(null),
+    useRef(null)
+  ];
+  
+  useEffect(() => {
+    // Set up intersection observers for each step
+    const observers = stepRefs.map((ref, index) => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          // When step is visible, set it as active
+          // Use a lower threshold for the last step to ensure it activates properly
+          const threshold = index === stepRefs.length - 1 ? 0.4 : 0.7;
+          if (entry.isIntersecting && entry.intersectionRatio >= threshold) {
+            setActiveStep(index);
+            // We need to expose this state to the ProcessImages component
+            window.currentProcessStep = index;
+          }
+        },
+        { threshold: [0.4, 0.7] }
+      );
+      
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+      
+      return observer;
+    });
+    
+    // Cleanup observers
+    return () => {
+      observers.forEach((observer, index) => {
+        if (stepRefs[index].current) {
+          observer.unobserve(stepRefs[index].current);
+        }
+      });
+    };
+  }, []);
+  
+  // Handle manual navigation between steps
+  const scrollToStep = (index) => {
+    if (stepRefs[index] && stepRefs[index].current) {
+      // For the last step, scroll to a position that ensures it's fully visible
+      if (index === steps.length - 1) {
+        const container = stepRefs[index].current.closest('.snap-container');
+        if (container) {
+          container.scrollTo({
+            top: container.scrollHeight,
+            behavior: 'smooth'
+          });
+        } else {
+          stepRefs[index].current.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else {
+        stepRefs[index].current.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+  
+  const steps = [
+    {
+      number: "01",
+      title: "Discovery",
+      description: "We deep dive into your business — systems, workflows, challenges, and bottlenecks — to identify exactly where automation and AI can deliver the biggest ROI.",
+      listItems: [
+        "Analyze current processes",
+        "Identify pain points and bottlenecks",
+        "Map existing tech stack",
+        "Calculate potential ROI"
+      ]
+    },
+    {
+      number: "02",
+      title: "Design",
+      description: "We map the solution. Custom workflows, smart integrations, logic — all tailored to your tech stack and operations. No fluff. Just what works.",
+      listItems: [
+        "Create custom workflow diagrams",
+        "Define integration points",
+        "Design user experience",
+        "Establish success metrics"
+      ]
+    },
+    {
+      number: "03",
+      title: "Development",
+      description: "We build it out — clean, secure, and tested for performance. Whether it's an automation or a custom tool, we make sure it runs like clockwork.",
+      listItems: [
+        "Build automation workflows",
+        "Implement AI integrations",
+        "Test for reliability and security",
+        "Optimize for performance"
+      ]
+    },
+    {
+      number: "04",
+      title: "Deployment",
+      description: "We launch, train your team, and stay with you post-launch to make sure the system actually sticks. Because tools mean nothing if no one uses them.",
+      listItems: [
+        "Seamless implementation",
+        "Comprehensive team training",
+        "Detailed documentation",
+        "Ongoing support and optimization"
+      ]
+    }
+  ];
+  
+  return (
+    <>
+      <div className="space-y-36 md:space-y-44 pb-20 px-2">
+        {steps.map((step, index) => (
+          <div 
+            key={index}
+            ref={stepRefs[index]}
+            className={`relative transition-all duration-500 process-step min-h-[500px] mt-10 ${
+              index === steps.length - 1 ? 'snap-end' : 'snap-start'
+            } snap-always snap-item ${
+              activeStep === index ? 'opacity-100 scale-100' : 'opacity-50 scale-95'
+            }`}
+          >
+            <div className={`absolute left-0 top-0 w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-full bg-gradient-to-r from-teal-500/30 to-blue-500/30 backdrop-blur-xl border transition-all duration-500 ${activeStep === index ? 'border-teal-400/60 shadow-xl shadow-teal-500/20' : 'border-teal-400/40 shadow-lg shadow-teal-500/10'} z-10`}>
+              <span className={`text-xl md:text-2xl font-bold bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent transition-all ${activeStep === index ? 'process-number-pulse' : ''}`}>
+                {step.number}
+              </span>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="pl-20 md:pl-24 pt-10 pr-2 md:pr-4"
+            >
+              <motion.h3 
+                className="text-2xl md:text-3xl font-bold mb-4 text-white"
+                animate={{
+                  color: activeStep === index ? 'rgb(20, 184, 166)' : 'rgb(255, 255, 255)'
+                }}
+                transition={{ duration: 0.4 }}
+              >
+                {step.title}
+              </motion.h3>
+              <p className="text-lg text-gray-300 mb-6 leading-relaxed">
+                {step.description}
+              </p>
+              <ul className="space-y-3">
+                {step.listItems.map((item, i) => (
+                  <motion.li 
+                    key={i}
+                    className="flex items-start gap-3"
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: 0.3 + (i * 0.1) }}
+                  >
+                    <div className="rounded-full bg-gradient-to-r from-teal-500/20 to-blue-500/20 p-1 mt-0.5">
+                      <CheckCircleIcon className="h-5 w-5 text-teal-400 flex-shrink-0" />
+                    </div>
+                    <span className="text-gray-200">{item}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+        ))}
+      </div>
+      
+      {/* Process Step Navigation Dots - Hidden */}
+      <div className="hidden">
+        {steps.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => scrollToStep(index)}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              activeStep === index 
+                ? 'bg-teal-400 w-6' 
+                : 'bg-slate-600 hover:bg-slate-500'
+            }`}
+            aria-label={`Go to step ${index + 1}`}
+          />
+        ))}
+      </div>
+    </>
+  );
+};
+
+const ProcessImages = () => {
+  const [activeImage, setActiveImage] = useState(0);
+  
+  // Sync with ProcessSteps component through window object
+  useEffect(() => {
+    const checkActiveStep = () => {
+      if (typeof window.currentProcessStep === 'number') {
+        setActiveImage(window.currentProcessStep);
+      }
+    };
+    
+    // Add scroll event listener to check for changes
+    window.addEventListener('scroll', checkActiveStep);
+    
+    // Initial check
+    checkActiveStep();
+    
+    // Interval as backup to ensure sync
+    const syncInterval = setInterval(checkActiveStep, 300);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('scroll', checkActiveStep);
+      clearInterval(syncInterval);
+    };
+  }, []);
+  
+  return (
+    <>
+      <motion.div
+        className="absolute inset-0"
+        initial={{ opacity: 0 }}
+        animate={{ 
+          opacity: activeImage === 0 ? 1 : 0,
+          scale: activeImage === 0 ? 1 : 0.95,
+          y: activeImage === 0 ? 0 : 20
+        }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="absolute -inset-4 bg-gradient-to-r from-teal-500/10 to-blue-500/10 rounded-2xl blur-xl opacity-70"></div>
+        <img 
+          src={image1} 
+          alt="Discovery Phase" 
+          className="w-full h-full rounded-xl object-cover shadow-2xl relative z-10 border border-white/10"
+        />
+        <motion.div
+          className="absolute inset-0 rounded-xl border-2 border-teal-500/30 z-20 pointer-events-none"
+          animate={{
+            boxShadow: activeImage === 0 ? [
+              '0 0 0 rgba(20, 184, 166, 0.1)',
+              '0 0 20px rgba(20, 184, 166, 0.3)',
+              '0 0 0 rgba(20, 184, 166, 0.1)'
+            ] : ['0 0 0 rgba(20, 184, 166, 0)']
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+      </motion.div>
+      
+      <motion.div
+        className="absolute inset-0"
+        initial={{ opacity: 0 }}
+        animate={{ 
+          opacity: activeImage === 1 ? 1 : 0,
+          scale: activeImage === 1 ? 1 : 0.95,
+          y: activeImage === 1 ? 0 : 20
+        }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl blur-xl opacity-70"></div>
+        <img 
+          src={image2} 
+          alt="Design Phase" 
+          className="w-full h-full rounded-xl object-cover shadow-2xl relative z-10 border border-white/10"
+        />
+        <motion.div
+          className="absolute inset-0 rounded-xl border-2 border-blue-500/30 z-20 pointer-events-none"
+          animate={{
+            boxShadow: activeImage === 1 ? [
+              '0 0 0 rgba(59, 130, 246, 0.1)',
+              '0 0 20px rgba(59, 130, 246, 0.3)',
+              '0 0 0 rgba(59, 130, 246, 0.1)'
+            ] : ['0 0 0 rgba(59, 130, 246, 0)']
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+      </motion.div>
+      
+      <motion.div
+        className="absolute inset-0"
+        initial={{ opacity: 0 }}
+        animate={{ 
+          opacity: activeImage === 2 ? 1 : 0,
+          scale: activeImage === 2 ? 1 : 0.95,
+          y: activeImage === 2 ? 0 : 20
+        }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/10 to-teal-500/10 rounded-2xl blur-xl opacity-70"></div>
+        <img 
+          src={image3} 
+          alt="Development Phase" 
+          className="w-full h-full rounded-xl object-cover shadow-2xl relative z-10 border border-white/10"
+        />
+        <motion.div
+          className="absolute inset-0 rounded-xl border-2 border-cyan-500/30 z-20 pointer-events-none"
+          animate={{
+            boxShadow: activeImage === 2 ? [
+              '0 0 0 rgba(6, 182, 212, 0.1)',
+              '0 0 20px rgba(6, 182, 212, 0.3)',
+              '0 0 0 rgba(6, 182, 212, 0.1)'
+            ] : ['0 0 0 rgba(6, 182, 212, 0)']
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+      </motion.div>
+      
+      <motion.div
+        className="absolute inset-0"
+        initial={{ opacity: 0 }}
+        animate={{ 
+          opacity: activeImage === 3 ? 1 : 0,
+          scale: activeImage === 3 ? 1 : 0.95,
+          y: activeImage === 3 ? 0 : 20
+        }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-2xl blur-xl opacity-70"></div>
+        <img 
+          src={image5} 
+          alt="Deployment Phase" 
+          className="w-full h-full rounded-xl object-cover shadow-2xl relative z-10 border border-white/10"
+        />
+        <motion.div
+          className="absolute inset-0 rounded-xl border-2 border-indigo-500/30 z-20 pointer-events-none"
+          animate={{
+            boxShadow: activeImage === 3 ? [
+              '0 0 0 rgba(99, 102, 241, 0.1)',
+              '0 0 20px rgba(99, 102, 241, 0.3)',
+              '0 0 0 rgba(99, 102, 241, 0.1)'
+            ] : ['0 0 0 rgba(99, 102, 241, 0)']
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+      </motion.div>
+    </>
+  );
+};
 
 export default function Home() {
   const floatingAnimation = useAnimation();
   const [currentStep, setCurrentStep] = React.useState(1);
+  const location = useLocation();
   
   useEffect(() => {
     floatingAnimation.start({
@@ -25,6 +381,18 @@ export default function Home() {
       }
     });
   }, [floatingAnimation]);
+
+  useEffect(() => {
+    // Check if we need to scroll to a section
+    if (location.state?.scrollTo) {
+      const element = document.getElementById(location.state.scrollTo);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [location]);
 
   // Animation variants
   const containerVariants = {
@@ -92,6 +460,74 @@ export default function Home() {
   const handleStepChange = (step) => {
     setCurrentStep(step);
   };
+
+  const faqs = [
+    {
+      icon: "❓",
+      question: "What kinds of businesses do you work with?",
+      answer: "We work with small to mid-sized businesses, solopreneurs, and lean teams who want to scale without adding more people. If you're an operator buried in tasks, managing messy handoffs, or losing time to manual work, you're exactly who we help. Our best clients want systems that make their business run smoother, not more software to manage."
+    },
+    {
+      icon: "⏱️",
+      question: "How long does it take to implement automations?",
+      answer: "Most projects take 2–6 weeks, depending on complexity. We move fast — and we focus on building systems that actually get used, not just demos that look cool."
+    },
+    {
+      icon: "💰",
+      question: "How does your pricing work?",
+      answer: "We scope every project based on the outcomes you want, not hours. We offer flat-rate projects, monthly retainers, or a hybrid — depending on how hands-on you want us."
+    },
+    {
+      icon: "🎓",
+      question: "Do you offer training or support after launch?",
+      answer: "Absolutely. We don't just hand off a system and bounce. We train your team, document everything, and offer optional ongoing support if you want us in your corner long-term."
+    },
+    {
+      icon: "🧠",
+      question: "What kind of tools do you build with?",
+      answer: "We use a mix of low-code tools like n8n, Zapier, Make, Airtable, and OpenAI — plus custom dev when needed. We choose the stack that solves the problem, not what sounds fancy. The goal is simple: it works, it scales, and you don't need a tech team to maintain it."
+    },
+    {
+      icon: "🏗️",
+      question: "Do you build from scratch or use templates?",
+      answer: "All workflows and systems are 100% custom to your ops and stack. Templates don't scale. We build infrastructure that fits your business — not someone else's funnel."
+    },
+    {
+      icon: "📈",
+      question: "How do I know if AI or automation is right for my business?",
+      answer: "If you're doing repetitive tasks, managing a messy stack, or missing follow-ups — it's time. Book a free audit and we'll show you exactly what to automate (and what not to)."
+    },
+    {
+      icon: "🧩",
+      question: "What industries do you specialize in?",
+      answer: "We've worked with agencies, consultants, eCom brands, SaaS companies, and service-based businesses. What matters more is your mindset: if you're ready to grow with systems — we've got you."
+    }
+  ];
+
+  const [openFAQ, setOpenFAQ] = useState(null);
+
+  useEffect(() => {
+    // Add invisible scrollbar styles
+    const style = document.createElement('style');
+    style.textContent = `
+      .invisible-scrollbar::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+      }
+      .invisible-scrollbar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .invisible-scrollbar::-webkit-scrollbar-thumb {
+        background: transparent;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
   return (
     <div className="relative">
@@ -277,92 +713,6 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Features section */}
-      <section className="py-20 bg-slate-800/50 mt-64 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-radial from-teal-500/5 to-transparent opacity-70"></div>
-        
-        {/* Decorative elements */}
-        <motion.div 
-          className="absolute top-20 left-10 w-32 h-32 rounded-full border border-teal-500/30"
-          animate={{
-            rotate: 360,
-            opacity: [0.2, 0.5, 0.2]
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-20 right-10 w-64 h-64 rounded-full border-2 border-blue-500/20"
-          animate={{
-            rotate: -360,
-            opacity: [0.1, 0.3, 0.1]
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-        
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0, threshold: 0.1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-          >
-            <AnimatedHeading 
-              tag="h2" 
-              text="Our AI-powered Solutions" 
-              className="text-3xl sm:text-4xl font-bold mb-6 text-animate-gradient"
-              animation="slideIn"
-            />
-            <p className="text-gray-300 max-w-3xl mx-auto">
-              Discover how our cutting-edge AI technologies can transform your business processes, 
-              increase efficiency, and drive innovation.
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Smart Analytics",
-                description: "Process vast amounts of data to extract actionable insights and patterns.",
-                icon: "📊"
-              },
-              {
-                title: "AI Chatbots",
-                description: "24/7 customer support with intelligent conversation capabilities.",
-                icon: "💬"
-              },
-              {
-                title: "Predictive Modeling",
-                description: "Forecast trends and outcomes to make informed business decisions.",
-                icon: "📈"
-              }
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                className="glass-card rounded-xl p-6 shadow-lg"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                whileHover={{ y: -5, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
-              >
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-3 text-white">{feature.title}</h3>
-                <p className="text-gray-300">{feature.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-      
       {/* Why Choose Us section */}
       <section className="py-20 bg-slate-900/70">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -373,130 +723,116 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
+            <motion.div 
+              className="inline-block px-6 py-2 rounded-full bg-gradient-to-r from-teal-500/20 to-blue-500/20 border border-teal-400/30 backdrop-blur-sm mb-6"
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <span className="text-sm font-medium bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">
+                Our Capabilities
+              </span>
+            </motion.div>
+            <AnimatedHeading 
+              tag="h2" 
+              text="Everything You Need - Automated, Integrated, and Built for Scale" 
+              className="text-3xl sm:text-4xl font-bold mb-6 text-animate-gradient"
+              animation="fadeIn"
+            />
             <p className="text-gray-300 max-w-3xl mx-auto">
-              Our unique approach combines cutting-edge AI technology with deep industry expertise to deliver solutions that truly transform your business.
+              From AI systems to custom-built tools, we deliver the full tech stack your business needs to run faster, smarter, and more efficiently - all under one roof.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            {/* Left Column - Features */}
-            <div className="space-y-8">
-              {[
-                {
-                  icon: "🧠",
-                  title: "Customized AI Solutions",
-                  description: "We don't believe in one-size-fits-all. Every AI solution we build is tailored to your specific business challenges and goals."
-                },
-                {
-                  icon: "🏆",
-                  title: "Industry Expertise",
-                  description: "Our team combines AI specialists with industry veterans who understand your market's unique demands and opportunities."
-                },
-                {
-                  icon: "🔄",
-                  title: "Seamless Integration",
-                  description: "Our solutions integrate smoothly with your existing systems and workflows, minimizing disruption while maximizing impact."
-                },
-                {
-                  icon: "🚀",
-                  title: "Ongoing Support & Evolution",
-                  description: "We provide continuous support and regularly update our solutions to adapt to your changing business needs."
-                }
-              ].map((item, index) => (
-                <motion.div 
-                  key={index}
-                  className="flex gap-4 items-start p-6 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 transition-colors"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                >
-                  <div className="text-3xl">{item.icon}</div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-2 text-white">{item.title}</h3>
-                    <p className="text-gray-300">{item.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Right Column - Results Card */}
-            <motion.div
-              className="lg:sticky lg:top-24"
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-            >
-              <div className="relative max-w-md mx-auto">
-                <div className="absolute -inset-1 bg-gradient-to-r from-teal-400 to-blue-500 rounded-lg blur-lg opacity-75 animate-pulse"></div>
-                <div className="relative glass-card rounded-lg p-8">
-                  <div className="text-4xl mb-4">📈</div>
-                  <h3 className="text-2xl font-bold mb-4 text-white">Proven Results</h3>
-                  <p className="text-gray-300 mb-4">Our clients typically see:</p>
-                  <ul className="space-y-3">
-                    {[
-                      "40% increase in operational efficiency",
-                      "60% reduction in response time",
-                      "35% cost savings through automation",
-                      "95% customer satisfaction with AI interactions"
-                    ].map((stat, index) => (
-                      <motion.li
-                        key={index}
-                        className="flex items-center gap-2 text-gray-200"
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.3 + (index * 0.1) }}
-                      >
-                        <svg className="w-5 h-5 text-teal-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
-                        </svg>
-                        <span>{stat}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: "🛠️",
+                title: "Custom AI Workflow Design",
+                description: "We build intelligent automations tailored to how your business actually runs - eliminating repetitive tasks and freeing up your team to focus on growth."
+              },
+              {
+                icon: "🔄",
+                title: "End-to-End Automation Systems",
+                description: "From lead capture to client onboarding and internal ops, we create seamless pipelines that keep your business running, even when you're off the clock."
+              },
+              {
+                icon: "📊",
+                title: "Live Analytics & Dashboards",
+                description: "Track impact, time saved, and performance in real-time. No more guessing - just clean, actionable data to guide your next move."
+              },
+              {
+                icon: "🔐",
+                title: "Smart Access & Enterprise-Level Security",
+                description: "Protect your data and your team. We design with permission layers, role control, and built-in compliance so you can scale with confidence."
+              },
+              {
+                icon: "☁️",
+                title: "Cloud-Native, Fully Managed",
+                description: "No servers, no headaches. We host, monitor, and maintain everything - so you stay focused on growth, not tech issues."
+              },
+              {
+                icon: "🤝",
+                title: "Real Human Support, Not Just Tech",
+                description: "You're not alone. Our team guides you from strategy to execution, with real people you can talk to and trust."
+              },
+              {
+                icon: "💻",
+                title: "Custom App & Web Development",
+                description: "We design and develop fast, scalable web apps, automation tools, and full digital platforms tailored to your exact needs - from internal dashboards to client-facing systems."
+              }
+            ].map((item, index) => (
+              <motion.div 
+                key={index}
+                className="flex flex-col p-6 rounded-lg glass-card hover-lift transition-all duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+              >
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="text-xl font-semibold mb-3 text-white">{item.title}</h3>
+                <p className="text-gray-300 flex-grow">{item.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
       
-      {/* How It Works section */}
-      <section className="py-24 relative overflow-hidden bg-slate-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* How It Works content */}
-          {/* ... */}
-        </div>
-      </section>
+      {/* Integration Logos Section */}
+      <IntegrationLogos />
       
-      {/* Testimonials section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Testimonials content */}
-          {/* ... */}
-        </div>
-      </section>
-      
-      {/* CTA section */}
-      <section className="py-20 bg-slate-800/50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* CTA content */}
-          {/* ... */}
-        </div>
-      </section>
-      
-      {/* The Ailevate Method Section */}
-      <section className="py-24 relative overflow-hidden bg-slate-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* The Ailevate Method content */}
-          {/* ... */}
-        </div>
-      </section>
-
       {/* Process Steps Section */}
-      <section className="py-24 relative overflow-hidden">
+      <section id="process" className="py-24 relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div 
+            className="absolute top-1/4 left-10 w-64 h-64 rounded-full bg-teal-500/5 blur-3xl"
+            animate={{
+              x: [0, 50, 0],
+              y: [0, 30, 0],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
+          <motion.div 
+            className="absolute bottom-1/3 right-10 w-72 h-72 rounded-full bg-blue-500/5 blur-3xl"
+            animate={{
+              x: [0, -30, 0],
+              y: [0, 50, 0],
+            }}
+            transition={{
+              duration: 25,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
+        </div>
+
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             className="text-center mb-16"
@@ -505,6 +841,17 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
+            <motion.div 
+              className="inline-block px-6 py-2 rounded-full bg-gradient-to-r from-teal-500/20 to-blue-500/20 border border-teal-400/30 backdrop-blur-sm mb-6"
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <span className="text-sm font-medium bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">
+                Our Process
+              </span>
+            </motion.div>
             <AnimatedHeading 
               tag="h2" 
               text="Our Implementation Process" 
@@ -512,61 +859,169 @@ export default function Home() {
               animation="fadeIn"
             />
             <p className="text-gray-300 max-w-3xl mx-auto">
-              Our streamlined process ensures we deliver high-quality, effective AI solutions tailored to your specific needs.
+              We build systems people actually use. From discovery to deployment, we focus on solutions that drive real business results.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                step: "1",
-                icon: "🔍",
-                title: "Discovery",
-                description: "We analyze your business needs, challenges, and goals to identify where AI can make the biggest impact."
-              },
-              {
-                step: "2",
-                icon: "✏️",
-                title: "Design",
-                description: "Our experts design a customized AI solution that addresses your specific requirements and integrates with your systems."
-              },
-              {
-                step: "3",
-                icon: "💻",
-                title: "Development",
-                description: "We build and test your solution, ensuring it meets our high standards for performance, security, and usability."
-              },
-              {
-                step: "4",
-                icon: "🚀",
-                title: "Deployment",
-                description: "We implement the solution, train your team, and provide ongoing support to ensure long-term success."
-              }
-            ].map((step, index) => (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+            {/* Left Column - Scrollable Content */}
+            <div className="lg:col-span-6 relative h-[650px] lg:h-[750px] overflow-y-auto invisible-scrollbar pb-32 snap-y snap-mandatory snap-container pl-3 md:pl-5">
+              <ProcessSteps />
+            </div>
+            
+            {/* Right Column - Images that change on scroll */}
+            <div className="lg:col-span-6 sticky top-24 h-[400px] md:h-[500px] hidden lg:block">
+              <div className="relative w-full h-full">
+                {/* Images for each step */}
+                <ProcessImages />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div 
+            className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-gradient-to-br from-teal-500/20 to-blue-500/20 blur-3xl"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
+          <motion.div 
+            className="absolute bottom-20 -left-40 w-96 h-96 rounded-full bg-gradient-to-tr from-purple-500/20 to-teal-500/20 blur-3xl"
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <motion.div 
+              className="inline-block px-6 py-2 rounded-full bg-gradient-to-r from-teal-500/20 to-blue-500/20 border border-teal-400/30 backdrop-blur-sm mb-6"
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <span className="text-sm font-medium bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">
+                Got Questions?
+              </span>
+            </motion.div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+              Everything you need to know about our automation services
+            </p>
+          </motion.div>
+
+          <div className="max-w-4xl mx-auto space-y-6">
+            {faqs.map((faq, index) => (
               <motion.div
                 key={index}
-                className="relative glass-card rounded-xl p-8 text-center"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="absolute top-4 left-4">
-                  <div className="w-8 h-8 rounded-full bg-teal-400 flex items-center justify-center text-slate-900 font-bold">
-                    {step.step}
+                <motion.button
+                  onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                  className="w-full text-left"
+                  whileHover={{ scale: 1.01 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div 
+                    className={`relative p-6 rounded-2xl transition-all duration-300 group ${
+                      openFAQ === index 
+                        ? 'bg-gradient-to-r from-slate-800/80 to-slate-900/80 shadow-lg border border-white/[0.08]' 
+                        : 'bg-slate-800/50 hover:bg-slate-800/70 border border-white/[0.05]'
+                    }`}
+                  >
+                    {/* Gradient overlay on hover */}
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-teal-500/0 to-blue-500/0 opacity-0 group-hover:from-teal-500/5 group-hover:to-blue-500/5 transition-opacity duration-300" />
+                    
+                    <div className="relative flex items-start">
+                      <div className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center mr-4 transition-all duration-300 ${
+                        openFAQ === index
+                          ? 'bg-gradient-to-r from-teal-500/20 to-blue-500/20 text-white'
+                          : 'bg-slate-700/50 text-slate-300'
+                      }`}>
+                        <span className="text-2xl transform transition-transform duration-300 group-hover:scale-110">
+                          {faq.icon}
+                        </span>
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-teal-300 transition-colors duration-300">
+                          {faq.question}
+                        </h3>
+                        <motion.div
+                          initial={false}
+                          animate={{ 
+                            height: openFAQ === index ? 'auto' : 0,
+                            opacity: openFAQ === index ? 1 : 0
+                          }}
+                          transition={{ 
+                            height: { duration: 0.3 },
+                            opacity: { duration: 0.2, delay: openFAQ === index ? 0.1 : 0 }
+                          }}
+                          className="overflow-hidden"
+                        >
+                          <p className="text-slate-300 leading-relaxed">
+                            {faq.answer}
+                          </p>
+                        </motion.div>
+                      </div>
+                      <motion.div
+                        animate={{ 
+                          rotate: openFAQ === index ? 180 : 0,
+                          backgroundColor: openFAQ === index ? 'rgba(45, 212, 191, 0.1)' : 'transparent'
+                        }}
+                        transition={{ duration: 0.3 }}
+                        className={`ml-4 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                          openFAQ === index ? 'bg-teal-500/10' : 'group-hover:bg-slate-700/50'
+                        }`}
+                      >
+                        <svg 
+                          className={`w-5 h-5 transition-colors duration-300 ${
+                            openFAQ === index ? 'text-teal-400' : 'text-slate-400 group-hover:text-teal-300'
+                          }`}
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24"
+                        >
+                          <path 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            strokeWidth={2} 
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </motion.div>
+                    </div>
                   </div>
-                </div>
-                
-                <div className="text-4xl mb-4">{step.icon}</div>
-                <h3 className="text-xl font-bold mb-4 text-white">{step.title}</h3>
-                <p className="text-gray-300">{step.description}</p>
-                
-                {index < 3 && (
-                  <div className="absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 hidden lg:block">
-                    <div className="w-8 h-0.5 bg-teal-400/30"></div>
-                  </div>
-                )}
+                </motion.button>
               </motion.div>
             ))}
           </div>

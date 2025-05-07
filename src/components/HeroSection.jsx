@@ -46,7 +46,7 @@ const HeroSection = () => {
                     to="/contact" 
                     className="inline-flex items-center px-8 py-3.5 rounded-lg bg-sky-500 text-white font-medium hover:bg-sky-400 shadow-lg shadow-sky-500/20 transition-all"
                   >
-                    Get Started
+                    
                     <FiArrowRight className="ml-2" />
                   </Link>
                 </motion.div>

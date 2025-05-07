@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,12 +22,43 @@ const Navbar = () => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
+  const handleNavClick = (path, sectionId) => {
+    if (path === '/' && !sectionId) {
+      // If clicking Home, scroll to top of home page
+      if (location.pathname === '/') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        navigate('/');
+      }
+    } else if (sectionId) {
+      if (location.pathname !== '/') {
+        // If we're not on home page, navigate there first
+        navigate('/', { state: { scrollTo: sectionId } });
+      } else {
+        // If we're already on home page, just scroll
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    } else {
+      navigate(path);
+    }
+  };
+
+  const isLinkActive = (path, sectionId) => {
+    if (sectionId) {
+      // For sections like Services, don't show as active
+      return false;
+    }
+    return location.pathname === path;
+  };
+
   const navLinks = [
     { path: '/', label: 'Home' },
-    { path: '/about', label: 'About' },
-    { path: '/what-we-offer', label: 'What We Offer' },
-    { path: '/services', label: 'Services' },
+    { path: '/', label: 'Services', sectionId: 'process' },
     { path: '/pricing', label: 'Pricing' },
+    { path: '/blog', label: 'Blog' },
     { path: '/contact', label: 'Contact Us' }
   ];
 
@@ -44,7 +76,10 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center z-50">
+          <div 
+            onClick={() => handleNavClick('/', null)} 
+            className="flex items-center z-50 cursor-pointer"
+          >
             <motion.div
               className="relative"
               whileHover={{ scale: 1.05 }}
@@ -60,19 +95,19 @@ const Navbar = () => {
                 transition={{ duration: 0.2 }}
               />
             </motion.div>
-          </Link>
+          </div>
 
           {/* Desktop Navigation Links */}
           <div className="hidden lg:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className="relative group"
+              <div
+                key={link.path + link.label}
+                className="relative group cursor-pointer"
+                onClick={() => handleNavClick(link.path, link.sectionId)}
               >
                 <motion.span
                   className={`text-base font-medium transition-colors duration-200 ${
-                    location.pathname === link.path
+                    isLinkActive(link.path, link.sectionId)
                       ? 'text-white'
                       : 'text-slate-300 group-hover:text-white'
                   }`}
@@ -85,8 +120,8 @@ const Navbar = () => {
                   className="absolute left-0 right-0 h-0.5 -bottom-1 bg-gradient-to-r from-teal-400 via-cyan-400 to-blue-400"
                   initial={{ width: "0%", opacity: 0 }}
                   animate={{
-                    width: location.pathname === link.path ? "100%" : "0%",
-                    opacity: location.pathname === link.path ? 1 : 0
+                    width: isLinkActive(link.path, link.sectionId) ? "100%" : "0%",
+                    opacity: isLinkActive(link.path, link.sectionId) ? 1 : 0
                   }}
                   transition={{ duration: 0.3 }}
                 />
@@ -97,12 +132,12 @@ const Navbar = () => {
                   whileHover={{ width: "100%" }}
                   transition={{ duration: 0.3 }}
                 />
-              </Link>
+              </div>
             ))}
           </div>
 
           {/* Desktop CTA Button */}
-          <Link to="/contact" className="hidden lg:block">
+          {/* <Link to="/contact" className="hidden lg:block">
             <motion.button
               className="btn-primary"
               whileHover={{ 
@@ -111,15 +146,14 @@ const Navbar = () => {
               }}
               whileTap={{ scale: 0.95 }}
             >
-              Get Started
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </motion.button>
-          </Link>
+          </Link> */}
 
           {/* Mobile Menu Button */}
-          <motion.button
+          {/* <motion.button
             className="lg:hidden relative w-10 h-10 flex items-center justify-center"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             whileHover={{ scale: 1.1 }}
@@ -150,7 +184,7 @@ const Navbar = () => {
                 transition={{ duration: 0.2 }}
               />
             </div>
-          </motion.button>
+          </motion.button> */}
         </div>
       </div>
 
@@ -190,7 +224,7 @@ const Navbar = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.2, delay: 0.1 }}
                 >
-                  <Link to="/contact" className="block">
+                  {/* <Link to="/contact" className="block">
                     <motion.button
                       className="btn-primary w-full justify-center mt-4"
                       whileTap={{ scale: 0.95 }}
@@ -200,7 +234,7 @@ const Navbar = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
                     </motion.button>
-                  </Link>
+                  </Link> */}
                 </motion.div>
               </div>
             </div>

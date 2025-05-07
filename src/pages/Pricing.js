@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import '../components/Pricing.css';
+import WhatWeOffer from './WhatWeOffer.jsx';
 
 const Pricing = () => {
   const fadeInUp = {
@@ -134,6 +135,11 @@ const Pricing = () => {
               </motion.button>
             </div>
           </motion.div>
+        </div>
+
+        {/* What We Offer Component */}
+        <div className="mt-24">
+          <WhatWeOffer isEmbedded={true} />
         </div>
       </div>
     </div>
